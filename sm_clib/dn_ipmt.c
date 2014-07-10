@@ -122,8 +122,8 @@ This command allows user to overwrite the manufacturer-assigned MAC address of
 the mote. The new value takes effect after the mote resets. 
 */
 dn_err_t dn_ipmt_setParameter_macAddress(uint8_t* macAddress, dn_ipmt_setParameter_macAddress_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -218,8 +218,8 @@ with the network. The join key is used at next join.
 Reading the joinKey parameter is prohibited for security reasons. 
 */
 dn_err_t dn_ipmt_setParameter_joinKey(uint8_t* joinKey, dn_ipmt_setParameter_joinKey_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -308,11 +308,17 @@ void dn_ipmt_setParameter_joinKey_reply(uint8_t cmdId, uint8_t rc, uint8_t* payl
 
 /**
 This command may be used to set the Network ID of the mote. This setting is 
-persistent and is used on next join attempt. 
+persistent and is used on next join attempt.
+
+As of version 1.4.x, a network ID of 0xFFFF can be used to indicate that the 
+mote should join the first network heard.
+
+0xFFFF is never used over the air as a valid network ID - you should not set 
+the Manager's network ID to 0xFFFF. 
 */
 dn_err_t dn_ipmt_setParameter_networkId(uint16_t networkId, dn_ipmt_setParameter_networkId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -409,8 +415,8 @@ PA. Similarly, if the mote has a typical RF output power of 0 dBm when the PA
 is disabled, then set the txPower parameter to 0 to turn off the PA. 
 */
 dn_err_t dn_ipmt_setParameter_txPower(int8_t txPower, dn_ipmt_setParameter_txPower_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -506,8 +512,8 @@ setParameter<joinDutyCycle> command to increase the join duty cycle up to 100%.
 This setting is persistent and requires a reset to take effect. 
 */
 dn_err_t dn_ipmt_setParameter_joinDutyCycle(uint8_t dutyCycle, dn_ipmt_setParameter_joinDutyCycle_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -604,8 +610,8 @@ recommended that the client code only subscribe to known events and gracefully
 ignore all unknown events. 
 */
 dn_err_t dn_ipmt_setParameter_eventMask(uint32_t eventMask, dn_ipmt_setParameter_eventMask_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -698,8 +704,8 @@ Programming (OTAP) of motes is allowed. This setting is persistent and takes
 effect immediately. 
 */
 dn_err_t dn_ipmt_setParameter_OTAPLockout(bool mode, dn_ipmt_setParameter_OTAPLockout_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -792,8 +798,8 @@ a router once joined the network. If disabled, the manager will keep the mote a
 leaf node. 
 */
 dn_err_t dn_ipmt_setParameter_routingMode(bool mode, dn_ipmt_setParameter_routingMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -885,8 +891,8 @@ This command allows the microprocessor to configure power source information on
 the device. This setting is persistent and is used at network join time. 
 */
 dn_err_t dn_ipmt_setParameter_powerSrcInfo(uint16_t maxStCurrent, uint8_t minLifetime, uint16_t currentLimit_0, uint16_t dischargePeriod_0, uint16_t rechargePeriod_0, uint16_t currentLimit_1, uint16_t dischargePeriod_1, uint16_t rechargePeriod_1, uint16_t currentLimit_2, uint16_t dischargePeriod_2, uint16_t rechargePeriod_2, dn_ipmt_setParameter_powerSrcInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -994,8 +1000,8 @@ to join (e.g combining 'auto join' with 'master' mode will result in mote not
 joining). 
 */
 dn_err_t dn_ipmt_setParameter_autoJoin(bool mode, dn_ipmt_setParameter_autoJoin_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1088,8 +1094,8 @@ returned is the EUI64 address of the device assigned by mote manufacturer, but
 it may be overwritten using the setParameter<macAddress> command. 
 */
 dn_err_t dn_ipmt_getParameter_macAddress(dn_ipmt_getParameter_macAddress_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1180,8 +1186,8 @@ void dn_ipmt_getParameter_macAddress_reply(uint8_t cmdId, uint8_t rc, uint8_t* p
 This command returns the network id stored in mote's persistent storage. 
 */
 dn_err_t dn_ipmt_getParameter_networkId(dn_ipmt_getParameter_networkId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1272,8 +1278,8 @@ void dn_ipmt_getParameter_networkId_reply(uint8_t cmdId, uint8_t rc, uint8_t* pa
 Get the radio output power in dBm, excluding any antenna gain. 
 */
 dn_err_t dn_ipmt_getParameter_txPower(dn_ipmt_getParameter_txPower_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1364,8 +1370,8 @@ void dn_ipmt_getParameter_txPower_reply(uint8_t cmdId, uint8_t rc, uint8_t* payl
 This command allows user to retrieve current value of joinDutyCycle parameter. 
 */
 dn_err_t dn_ipmt_getParameter_joinDutyCycle(dn_ipmt_getParameter_joinDutyCycle_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1457,8 +1463,8 @@ getParameter<eventMask> allows the microprocessor to read the currently
 subscribed-to event types. 
 */
 dn_err_t dn_ipmt_getParameter_eventMask(dn_ipmt_getParameter_eventMask_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1550,8 +1556,8 @@ The getParameter<moteInfo> command returns static information about the
 moteshardware and network stack software. 
 */
 dn_err_t dn_ipmt_getParameter_moteInfo(dn_ipmt_getParameter_moteInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1651,8 +1657,8 @@ The getParameter<networkInfo> command may be used to retrieve the mote's
 network-related parameters. 
 */
 dn_err_t dn_ipmt_getParameter_netInfo(dn_ipmt_getParameter_netInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1747,8 +1753,8 @@ The getParameter<moteStatus> command is used to retrieve current mote state
 andother dynamic information. 
 */
 dn_err_t dn_ipmt_getParameter_moteStatus(dn_ipmt_getParameter_moteStatus_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1847,8 +1853,8 @@ information includes variable delay. For more precise time information consider
 using TIMEn pin (see timeIndication). 
 */
 dn_err_t dn_ipmt_getParameter_time(dn_ipmt_getParameter_time_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1944,8 +1950,8 @@ The getParameter<charge> command retrieves the charge consumption of the
 motesince the last reset. 
 */
 dn_err_t dn_ipmt_getParameter_charge(dn_ipmt_getParameter_charge_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2041,8 +2047,8 @@ radio test performed using the testRadioRx command. The statistics show the
 number of good and bad packets (CRC failures) received during the test 
 */
 dn_err_t dn_ipmt_getParameter_testRadioRxStats(dn_ipmt_getParameter_testRadioRxStats_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2135,8 +2141,8 @@ This command reads the current state of OTAP lockout, i.e. whether over-the-air
 upgrades of software are permitted on this mote. 
 */
 dn_err_t dn_ipmt_getParameter_OTAPLockout(dn_ipmt_getParameter_OTAPLockout_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2228,8 +2234,8 @@ This command retrieves the mote's Mote ID. If the mote is not in the network,
 value of 0 is returned. 
 */
 dn_err_t dn_ipmt_getParameter_moteId(dn_ipmt_getParameter_moteId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2321,8 +2327,8 @@ This command allows the microprocessor to read IPV6 address assigned to the
 mote. Before the mote has an assigned address it will return all 0s. 
 */
 dn_err_t dn_ipmt_getParameter_ipv6Address(dn_ipmt_getParameter_ipv6Address_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2414,8 +2420,8 @@ This command allows the microprocessor to retrieve the current routing mode of
 the mote. 
 */
 dn_err_t dn_ipmt_getParameter_routingMode(dn_ipmt_getParameter_routingMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2506,8 +2512,8 @@ void dn_ipmt_getParameter_routingMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* 
 This command allows the microprocessor to read a mote's power source settings. 
 */
 dn_err_t dn_ipmt_getParameter_powerSrcInfo(dn_ipmt_getParameter_powerSrcInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2609,8 +2615,8 @@ This command allows the microprocessor to retrieve the current autoJoin
 setting. 
 */
 dn_err_t dn_ipmt_getParameter_autoJoin(dn_ipmt_getParameter_autoJoin_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2699,12 +2705,13 @@ void dn_ipmt_getParameter_autoJoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* pay
 
 /**
 The join command requests that mote start searching for the network and attempt 
-to join.The mote must be in the Idle state for this command to be valid. Note 
-that the join time will be affected by the maximum current setting. 
+to join.The mote must be in the Idle state or the Promiscuous Listen state(see 
+search) for this command to be valid. Note that the join time will be affected 
+by the maximum current setting. 
 */
 dn_err_t dn_ipmt_join(dn_ipmt_join_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2757,7 +2764,7 @@ void dn_ipmt_join_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_JOIN_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2789,8 +2796,8 @@ disconnected event will be generated immediately. This command may be issued at
 any time. 
 */
 dn_err_t dn_ipmt_disconnect(dn_ipmt_disconnect_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2843,7 +2850,7 @@ void dn_ipmt_disconnect_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_DISCONNECT_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2874,8 +2881,8 @@ command. Resetting a mote directly can adversely impact its descendants; to
 disconnect gracefully from the network, use the disconnect command 
 */
 dn_err_t dn_ipmt_reset(dn_ipmt_reset_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2928,7 +2935,7 @@ void dn_ipmt_reset_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t le
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_RESET_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2962,8 +2969,8 @@ disconnect command before using the lowPowerSleep command. A hardware reset is
 required to bring a mote out of deep sleep mode. 
 */
 dn_err_t dn_ipmt_lowPowerSleep(dn_ipmt_lowPowerSleep_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3016,7 +3023,7 @@ void dn_ipmt_lowPowerSleep_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_LOWPOWERSLEEP_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3044,20 +3051,22 @@ void dn_ipmt_lowPowerSleep_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
 The testRadioRx command clears all previously collected statistics and 
 initiates a test of radio reception for the specified channel and duration. 
 During the test, the mote keeps statistics about the number of packets received 
-(with and without error). Note that the nonzero station id specified in this 
-command must match the transmitter's station id. This is necessary to isolate 
-traffic if multiple tests are running in the same radio space. The test results 
-may be retrieved using the getParameter<testRadioRxStats> command. The 
-testRadioRx command may only be issued in Idle mode. The mote must be reset 
-(either hardware or software reset) after radio tests are complete and prior to joining.
+(with and without error). The test results may be retrieved using the 
+getParameter<testRadioRxStats> command. The testRadioRx command may only be 
+issued in Idle mode. The mote must be reset (either hardware or software reset) 
+after radio tests are complete and prior to joining.
+
+The station ID is a user selectable value. It must be set to match the station 
+ID used by the transmitter. Station ID is used to isolate traffic if multiple 
+tests are running in the same radio space.
 
 
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26. 
 */
 dn_err_t dn_ipmt_testRadioRx(uint16_t channelMask, uint16_t time, uint8_t stationId, dn_ipmt_testRadioRx_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3113,7 +3122,7 @@ void dn_ipmt_testRadioRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIORX_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3144,8 +3153,8 @@ default values. Since many parameters are read by the mote only at power-up,
 this command should be followed up by mote reset. 
 */
 dn_err_t dn_ipmt_clearNV(dn_ipmt_clearNV_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3198,7 +3207,7 @@ void dn_ipmt_clearNV_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_CLEARNV_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3232,8 +3241,8 @@ serviceChanged event that it can use as a trigger to read the new service
 allocation. 
 */
 dn_err_t dn_ipmt_requestService(uint16_t destAddr, uint8_t serviceType, uint32_t value, dn_ipmt_requestService_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3289,7 +3298,7 @@ void dn_ipmt_requestService_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_REQUESTSERVICE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3318,8 +3327,8 @@ The getServiceInfo command returns information about the service currently
 allocated to the mote. 
 */
 dn_err_t dn_ipmt_getServiceInfo(uint16_t destAddr, uint8_t type, dn_ipmt_getServiceInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3407,8 +3416,8 @@ The openSocket command creates an endpoint for IP communication and returns an
 ID for the socket. 
 */
 dn_err_t dn_ipmt_openSocket(uint8_t protocol, dn_ipmt_openSocket_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3491,8 +3500,8 @@ void dn_ipmt_openSocket_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
 Close the previously open socket. 
 */
 dn_err_t dn_ipmt_closeSocket(uint8_t socketId, dn_ipmt_closeSocket_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3546,7 +3555,7 @@ void dn_ipmt_closeSocket_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_CLOSESOCKET_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3576,8 +3585,8 @@ given a protocol family, but not assigned a port. This association must be
 performed before the socket can accept connections from other hosts. 
 */
 dn_err_t dn_ipmt_bindSocket(uint8_t socketId, uint16_t port, dn_ipmt_bindSocket_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3632,7 +3641,7 @@ void dn_ipmt_bindSocket_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_BINDSOCKET_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3667,8 +3676,8 @@ destination port should be in the range 0xF0B8-F0BF (61624-61631) to maximize
 payload. 
 */
 dn_err_t dn_ipmt_sendTo(uint8_t socketId, uint8_t* destIP, uint16_t destPort, uint8_t serviceType, uint8_t priority, uint16_t packetId, uint8_t* payload, uint8_t payloadLen, dn_ipmt_sendTo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3728,7 +3737,7 @@ void dn_ipmt_sendTo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SENDTO_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3754,13 +3763,14 @@ void dn_ipmt_sendTo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
 
 /**
 The search command requests that mote start listening for advertisements and 
-report those heard from any network withoutattempting to join.The mote must be 
-in the Idle state for this command to be valid. The search state can be exiting 
-by issuing the join command or the reset command. 
+report those heard from any network withoutattempting to join. This is called 
+the Promiscuous Listen state. The mote must be in the Idle state for this 
+command to be valid. The search state can be exited by issuing the join command 
+or the reset command. 
 */
 dn_err_t dn_ipmt_search(dn_ipmt_search_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3813,7 +3823,7 @@ void dn_ipmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SEARCH_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3867,13 +3877,18 @@ The testRadioTxExt command may only be issued when the mote is in Idle mode,
 prior to its joining the network. The mote must be reset (either hardware or 
 software reset) after radio tests are complete and prior to joining.
 
+The station ID is a user selectable value. It is used in packet tests so that a 
+receiver can identify packets from this device in cases where there may be 
+multiple tests running in the same radio space. This field is not used for CM 
+or CW tests. See testRadioRX (SmartMesh IP) or testRadioRxExt (SmartMesh WirelessHART).
+
 
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26. 
 */
 dn_err_t dn_ipmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_ipmt_testRadioTxExt_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3952,7 +3967,7 @@ void dn_ipmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIOTXEXT_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3980,11 +3995,14 @@ void dn_ipmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
 Zeroize (zeroise) command erases flash area that is used to store configuration 
 parameters, such as join keys. This command is intended to satisfy zeroization 
 requirement of FIPS-140 standard. After the command executes, the mote should 
-be reset. 
+be reset. Available in mote >= 1.4.x
+
+The zeroize command will render the mote inoperable. It must be re-programmed 
+via SPI or JTAG in order to be useable. 
 */
 dn_err_t dn_ipmt_zeroize(dn_ipmt_zeroize_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4037,7 +4055,7 @@ void dn_ipmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_ZEROIZE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4135,11 +4153,6 @@ void dn_ipmt_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uin
          memcpy(&notif_receive->payload[0],&payload[DN_RECEIVE_NOTIF_OFFS_PAYLOAD],len-DN_RECEIVE_NOTIF_OFFS_PAYLOAD);
          break;
       case CMDID_MACRX:
-         
-         // verify length payload received
-         if (len<0) {
-            return;
-         }
          
          // verify length notifBuf
          if (len>dn_ipmt_vars.notifBufLen) {

@@ -98,8 +98,6 @@ void dn_serial_mt_rxHdlcFrame(uint8_t* rxFrame, uint8_t rxFrameLen) {
    uint8_t packetId;
    // misc
    uint8_t isRepeatId;
-   uint8_t updateRxPacketId;
-   uint8_t i;
    
    // assert length is OK
    if (rxFrameLen<3) {
@@ -130,7 +128,7 @@ void dn_serial_mt_rxHdlcFrame(uint8_t* rxFrame, uint8_t rxFrameLen) {
       dn_serial_sendReply(cmdId,DN_SERIAL_RC_OK,NULL,0);
       
       // dispatch
-      if (length>0 && dn_serial_mt_vars.requestCb!=NULL) {
+      if (isRepeatId==FALSE && length>0 && dn_serial_mt_vars.requestCb!=NULL) {
          dn_serial_mt_vars.requestCb(cmdId,flags,&rxFrame[3],length);
       }
    }

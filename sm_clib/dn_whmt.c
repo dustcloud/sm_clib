@@ -84,6 +84,9 @@ void dn_whmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
 void dn_whmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_testRadioRxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_whmt_fileWrite_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_whmt_fileRead_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_whmt_fileOpen_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 
 // serial RX
 void dn_whmt_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uint8_t len);
@@ -139,8 +142,8 @@ the antenna. This command may be issued at any time and takes effect upon the
 next transmission. 
 */
 dn_err_t dn_whmt_setParameter_txPower(int8_t txPower, dn_whmt_setParameter_txPower_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -242,8 +245,8 @@ This command may be issued multiple times during the joining process. This
 command is only effective when the mote is in the Idle and Searching states. 
 */
 dn_err_t dn_whmt_setParameter_joinDutyCycle(uint8_t dutyCycle, dn_whmt_setParameter_joinDutyCycle_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -341,8 +344,8 @@ Command 778 is deprecated in version 7.4 of the HART specification as most
 existing gateways do not use battery life information. 
 */
 dn_err_t dn_whmt_setParameter_batteryLife(uint16_t batteryLife, uint8_t powerStatus, dn_whmt_setParameter_batteryLife_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -446,11 +449,19 @@ re-issuing the setParameter<service> command.
 
 To delete a service, set the time field of the desired service to zero. Service 
 request flags, application domain, and destination address are ignored by the 
-mote when time equals zero. 
+mote when time equals zero.
+
+Normally all service requests are compared against the power limits set with 
+the setNVParameter<powerInfo> command. Services that would cause the device to 
+exceed its power budget are denied.In Manager 4.1.1, a service request of 1 ms 
+will result in the manager respecting the power limit for publish services, but 
+will allow a block-transfer service requests (see the SmartMesh WirelessHART 
+User's Guide section on Services)that would result in a fast pipe being 
+activated. 
 */
 dn_err_t dn_whmt_setParameter_service(uint8_t serviceId, uint8_t serviceReqFlags, uint8_t appDomain, uint16_t destAddr, uint32_t time, dn_whmt_setParameter_service_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -550,8 +561,8 @@ command is only required for WirelessHART-compliant devices. Refer to the HART
 Command Specifications for the appropriate value to use. 
 */
 dn_err_t dn_whmt_setParameter_hartDeviceStatus(uint8_t hartDevStatus, dn_whmt_setParameter_hartDeviceStatus_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -645,8 +656,8 @@ to join. This command is only required for WirelessHART-compliant devices.Note
 that the contents of this command are not validated by mote. 
 */
 dn_err_t dn_whmt_setParameter_hartDeviceInfo(uint8_t* hartCmd0, uint8_t* hartCmd20, dn_whmt_setParameter_hartDeviceInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -747,8 +758,8 @@ recommended that the client code only subscribe to known events and gracefully
 ignore all unknown events. 
 */
 dn_err_t dn_whmt_setParameter_eventMask(uint32_t eventMask, dn_whmt_setParameter_eventMask_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -847,8 +858,8 @@ The current status of writeProtect may be read via the getParameter<moteStatus>
 command. This command is for WirelessHART-compliant devices only. 
 */
 dn_err_t dn_whmt_setParameter_writeProtect(uint8_t writeProtect, dn_whmt_setParameter_writeProtect_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -945,8 +956,8 @@ command.Note: This parameter is available in devices running mote software >=
 1.1.0 
 */
 dn_err_t dn_whmt_setParameter_lock(uint8_t code, uint16_t master, dn_whmt_setParameter_lock_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1041,8 +1052,8 @@ searching for network. The value of join duty cycle is expressed in increments
 of 1/255th of 100%, where 0 corresponds to 0% and 255 corresponds to 100%. 
 */
 dn_err_t dn_whmt_getParameter_joinDutyCycle(dn_whmt_getParameter_joinDutyCycle_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1137,8 +1148,8 @@ requested by the device, and those in the range 0x80-FF are assigned
 independently by the network manager. 
 */
 dn_err_t dn_whmt_getParameter_service(uint8_t serviceId, dn_whmt_getParameter_service_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1237,8 +1248,8 @@ hardware and software. Note that network state-related information about the
 mote may be retrieved using getParameter<networkInfo>. 
 */
 dn_err_t dn_whmt_getParameter_moteInfo(dn_whmt_getParameter_moteInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1338,8 +1349,8 @@ network-related parameters. Note that static information about the motes
 hardware and software may be retrieved using getParameter<moteInfo>. 
 */
 dn_err_t dn_whmt_getParameter_networkInfo(dn_whmt_getParameter_networkInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1435,8 +1446,8 @@ of the mote hardware and software may be retrieved using
 getParameter<moteInfo>. 
 */
 dn_err_t dn_whmt_getParameter_moteStatus(dn_whmt_getParameter_moteStatus_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1532,8 +1543,8 @@ void dn_whmt_getParameter_moteStatus_reply(uint8_t cmdId, uint8_t rc, uint8_t* p
 The getParameter<time> command is used to request the current time on the mote. 
 */
 dn_err_t dn_whmt_getParameter_time(dn_whmt_getParameter_time_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1628,8 +1639,8 @@ mote since the last reset, as well as the mote uptime and last measured
 temperature. 
 */
 dn_err_t dn_whmt_getParameter_charge(dn_whmt_getParameter_charge_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1726,8 +1737,8 @@ show the number of good and bad packets (CRC failures) received during the
 test. 
 */
 dn_err_t dn_whmt_getParameter_testRadioRxStats(dn_whmt_getParameter_testRadioRxStats_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1822,8 +1833,8 @@ getNVParameter<lock> command.Note: This parameter is available in devices
 running mote software >= 1.1.0 
 */
 dn_err_t dn_whmt_getParameter_lock(dn_whmt_getParameter_lock_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1916,8 +1927,8 @@ The setNVParameter<macAddress> command may be used to supersede the
 factory-configured MAC address of the mote. 
 */
 dn_err_t dn_whmt_setNVParameter_macAddress(uint8_t memory, uint8_t* macAddr, dn_whmt_setNVParameter_macAddress_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2015,8 +2026,8 @@ called while the mote is in Idle state. Otherwise, the new value will be used
 after the next mote boot. 
 */
 dn_err_t dn_whmt_setNVParameter_joinKey(uint8_t memory, uint8_t* joinKey, dn_whmt_setNVParameter_joinKey_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2114,11 +2125,17 @@ storage at boot time. Note: while the mote is in Idle state, it is possible to
 update the value of mote's in-RAM Network ID by using the RAM flag in the 
 header of this command. This avoids the extra reset that is needed to start 
 using the Network ID. Network ID can also be set over the air using HART 
-command 773 in a WirelessHART-compliant network. 
+command 773 in a WirelessHART-compliant network.
+
+As of version 1.1.1, a network ID of 0xFFFF can be used to indicate that the 
+mote should join the first network heard.
+
+0xFFFF is never used over the air as a valid HART network ID - do not set the 
+Manager's network ID to 0xFFFF. 
 */
 dn_err_t dn_whmt_setNVParameter_networkId(uint8_t memory, uint16_t networkId, dn_whmt_setNVParameter_networkId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2220,8 +2237,8 @@ immediately, use the write RAM option of this command, which can also be used
 at any time. 
 */
 dn_err_t dn_whmt_setNVParameter_txPower(uint8_t memory, int8_t txPower, dn_whmt_setNVParameter_txPower_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2318,8 +2335,8 @@ the command is called while the mote is in Idle state. Otherwise, the new value
 will be used after the next mote boot. 
 */
 dn_err_t dn_whmt_setNVParameter_powerInfo(uint8_t memory, uint8_t powerSource, uint16_t dischargeCur, uint32_t dischargeTime, uint32_t recoverTime, dn_whmt_setNVParameter_powerInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2427,8 +2444,8 @@ specifically raises it as a compliance issue when you submit your device for
 testing. 
 */
 dn_err_t dn_whmt_setNVParameter_ttl(uint8_t memory, uint8_t timeToLive, dn_whmt_setNVParameter_ttl_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2529,8 +2546,8 @@ value is 2, assuming a +2 dBi antenna gain. To change the transmit power
 immediately, use the write RAM option of this command. 
 */
 dn_err_t dn_whmt_setNVParameter_HARTantennaGain(uint8_t memory, int8_t antennaGain, dn_whmt_setNVParameter_HARTantennaGain_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2633,8 +2650,8 @@ both over the air and through its wired maintenance port. OEMs have the option
 of making such a command password protected. 
 */
 dn_err_t dn_whmt_setNVParameter_OTAPlockout(uint8_t memory, uint8_t otapLockout, dn_whmt_setNVParameter_OTAPlockout_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2735,8 +2752,8 @@ takes effect upon mote reset.
 Note: This parameter is available in devices running mote software >=1.1.0 
 */
 dn_err_t dn_whmt_setNVParameter_hrCounterMode(uint8_t memory, uint8_t hrCounterMode, dn_whmt_setNVParameter_hrCounterMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2837,8 +2854,8 @@ compliance to HART specification requirements, specifically:
 Note: This parameter is available in devices running mote software >= 1.1.0 
 */
 dn_err_t dn_whmt_setNVParameter_compliantMode(uint8_t memory, uint8_t compliantMode, dn_whmt_setNVParameter_compliantMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2939,8 +2956,8 @@ RAM) when calling this command.Note: This parameter is available in devices
 running mote software >= 1.1.0 
 */
 dn_err_t dn_whmt_setNVParameter_lock(uint8_t memory, uint8_t code, uint16_t master, dn_whmt_setNVParameter_lock_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3040,8 +3057,8 @@ previously - the mote will use its hardware MAC in this case, but it is not
 displayed with this command. 
 */
 dn_err_t dn_whmt_getNVParameter_macAddress(dn_whmt_getNVParameter_macAddress_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3133,8 +3150,8 @@ The getNVParameter<networkID> command returns the Network ID stored in mote's
 persistent storage. 
 */
 dn_err_t dn_whmt_getNVParameter_networkId(dn_whmt_getNVParameter_networkId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3226,8 +3243,8 @@ The getNVParameter<txPower> command returns the transmit power value stored in
 mote's persistent storage. 
 */
 dn_err_t dn_whmt_getNVParameter_txPower(dn_whmt_getNVParameter_txPower_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3319,8 +3336,8 @@ The getNVParameter<powerInfo> command returns the power supply information
 stored in mote's persistent storage. 
 */
 dn_err_t dn_whmt_getNVParameter_powerInfo(dn_whmt_getNVParameter_powerInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3417,8 +3434,8 @@ into the network, and specifies the maximum number of hops the packet may
 traverse before it is discarded from the network. 
 */
 dn_err_t dn_whmt_getNVParameter_ttl(dn_whmt_getNVParameter_ttl_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3512,8 +3529,8 @@ the Dust mote when replying to HART command 797 (Write Radio Power Output) and
 to HART command 798 (Read Radio Output Power). 
 */
 dn_err_t dn_whmt_getNVParameter_HARTantennaGain(dn_whmt_getNVParameter_HARTantennaGain_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3606,8 +3623,8 @@ motes persistent storage. OTAP lockout specifies whether the mote can be
 Over-The-Air-Programmed (OTAP). 
 */
 dn_err_t dn_whmt_getNVParameter_OTAPlockout(dn_whmt_getNVParameter_OTAPlockout_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3702,8 +3719,8 @@ deals with statistics counters when they reach their maximum value.
 Note: This parameter is available in devices running mote software >=1.1.0 
 */
 dn_err_t dn_whmt_getNVParameter_hrCounterMode(dn_whmt_getNVParameter_hrCounterMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3802,8 +3819,8 @@ HART specification requirements, specifically:
 Note: This parameter is available in devices running mote software >= 1.1.0 
 */
 dn_err_t dn_whmt_getNVParameter_compliantMode(dn_whmt_getNVParameter_compliantMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3897,8 +3914,8 @@ use the getParameter<lock> command.Note: This parameter is available in devices
 running mote software >= 1.1.0 
 */
 dn_err_t dn_whmt_getNVParameter_lock(dn_whmt_getNVParameter_lock_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4006,8 +4023,8 @@ mote is in the process of transition from the Connected state to the
 Operational state. 
 */
 dn_err_t dn_whmt_send(bool tranType, bool tranDir, uint16_t destAddr, uint8_t serviceId, uint8_t appDomain, uint8_t priority, uint16_t reserved, uint8_t seqNum, uint8_t payloadLen, uint8_t* payload, dn_whmt_send_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4074,7 +4091,7 @@ void dn_whmt_send_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SEND_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4100,13 +4117,14 @@ void dn_whmt_send_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
 
 /**
 The join command requests that a mote start searching for the network and 
-attempt to join. The mote must be in the Idle state for this command to be 
-valid. The join time is partly determined by the join duty cycle. For guidance 
-on setting this parameter, see setParameter<joinDutyCycle>. 
+attempt to join. The mote must be in the Idle state or the Promiscuous Listen 
+state (see search) for this command to be valid. The join time is partly 
+determined by the join duty cycle. For guidance on setting the join duty cycle, 
+see setParameter<joinDutyCycle>. 
 */
 dn_err_t dn_whmt_join(dn_whmt_join_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4159,7 +4177,7 @@ void dn_whmt_join_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_JOIN_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4199,8 +4217,8 @@ OEM microprocessor. The microprocessor should wait to acknowledge the boot
 event before shutting down. 
 */
 dn_err_t dn_whmt_disconnect(dn_whmt_disconnect_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4253,7 +4271,7 @@ void dn_whmt_disconnect_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_DISCONNECT_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4283,8 +4301,8 @@ mote will always send a response packet before initiating the reset. To force
 the mote to gracefully leave the network, use the disconnect command. 
 */
 dn_err_t dn_whmt_reset(dn_whmt_reset_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4337,7 +4355,7 @@ void dn_whmt_reset_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t le
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_RESET_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4378,8 +4396,8 @@ the /RST control line. For power consumption information, refer to the mote
 product datasheet. 
 */
 dn_err_t dn_whmt_lowPowerSleep(dn_whmt_lowPowerSleep_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4432,7 +4450,7 @@ void dn_whmt_lowPowerSleep_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_LOWPOWERSLEEP_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4467,8 +4485,8 @@ payload of the acknowledgement. The RC_INVALID_VALUE response means that the
 hartPayload command was given a HART command that the mote does not terminate. 
 */
 dn_err_t dn_whmt_hartPayload(uint8_t payloadLen, uint8_t* payload, dn_whmt_hartPayload_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4570,8 +4588,8 @@ Note: this command is deprecated and should not be used in new designs. The
 replacement command is testRadioTxExt. 
 */
 dn_err_t dn_whmt_testRadioTx(uint8_t channel, uint16_t numPackets, dn_whmt_testRadioTx_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4626,7 +4644,7 @@ void dn_whmt_testRadioTx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIOTX_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4666,8 +4684,8 @@ Note: this command is deprecated and should not be used in new designs. The
 replacement command is testRadioRxExt. 
 */
 dn_err_t dn_whmt_testRadioRx(uint8_t channel, uint16_t time, dn_whmt_testRadioRx_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4722,7 +4740,7 @@ void dn_whmt_testRadioRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIORX_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4754,8 +4772,8 @@ counter, the corresponding manager's Access Control List (ACL) entry may need
 to be cleared as well to allow joining. 
 */
 dn_err_t dn_whmt_clearNV(dn_whmt_clearNV_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4808,7 +4826,7 @@ void dn_whmt_clearNV_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_CLEARNV_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4834,14 +4852,15 @@ void dn_whmt_clearNV_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
 
 /**
 The search command causes the mote to listen for network advertisements and 
-notify the microprocessor about each advertisement it hears. Notifications are 
-sent using the advReceived notification. The search command may only be issued 
-prior to join. The mote stays in listen mode until the join command is 
-received. 
+notify the microprocessor about each advertisement it hears. This is referred 
+to as the Promiscuous Listen state. Notifications are sent using the 
+advReceived notification. The search command may only be issued prior to join. 
+The mote stays in listen mode until the join command is received or the mote is 
+reset. 
 */
 dn_err_t dn_whmt_search(dn_whmt_search_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -4894,7 +4913,7 @@ void dn_whmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SEARCH_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -4948,13 +4967,18 @@ The testRadioTxExt command may only be issued when the mote is in Idle mode,
 prior to its joining the network. The mote must be reset (either hardware or 
 software reset) after radio tests are complete and prior to joining.
 
+The station ID is a user selectable value. It is used in packet tests so that a 
+receiver can identify packets from this device in cases where there may be 
+multiple tests running in the same radio space. This field is not used for CM 
+or CW tests. See testRadioRX (SmartMesh IP) or testRadioRxExt (SmartMesh WirelessHART).
+
 
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26. 
 */
-dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, dn_whmt_testRadioTxExt_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_whmt_testRadioTxExt_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -5001,6 +5025,7 @@ dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t re
    dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_TESTRADIOTXEXT_REQ_OFFS_DELAY_9],delay_9);
    dn_whmt_vars.outputBuf[DN_TESTRADIOTXEXT_REQ_OFFS_PKLEN_10] = pkLen_10;
    dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_TESTRADIOTXEXT_REQ_OFFS_DELAY_10],delay_10);
+   dn_whmt_vars.outputBuf[DN_TESTRADIOTXEXT_REQ_OFFS_STATIONID] = stationId;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -5032,7 +5057,7 @@ void dn_whmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIOTXEXT_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -5060,20 +5085,21 @@ void dn_whmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
 The testRadioRx command clears all previously collected statistics and 
 initiates a test of radio reception for the specified channel and duration. 
 During the test, the mote keeps statistics about the number of packets received 
-(with and without error). Note that the nonzero station id specified in this 
-command must match the transmitter's station id. This helps to isolate traffic 
-if multiple tests are running in the same radio space. The test results may be 
-retrieved using the getParameter<testRadioRxStats> command.The mote must be 
-reset (either hardware or software reset) after radio tests are complete and 
-prior to joining.
+(with and without error). The test results may be retrieved using the 
+getParameter<testRadioRxStats> command.The mote must be reset (either hardware 
+or software reset) after radio tests are complete and prior to joining.
+
+The station ID is a user selectable value. It must be set to match the station 
+ID used by the transmitter. Station ID is used to isolate traffic if multiple 
+tests are running in the same radio space.
 
 
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26. 
 */
 dn_err_t dn_whmt_testRadioRxExt(uint16_t channelMask, uint16_t time, uint8_t stationId, dn_whmt_testRadioRxExt_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -5129,7 +5155,7 @@ void dn_whmt_testRadioRxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_TESTRADIORXEXT_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -5157,11 +5183,14 @@ void dn_whmt_testRadioRxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
 Zeroize (zeroise) command erases flash area that is used to store configuration 
 parameters, such as join keys. This command is intended to satisfy zeroization 
 requirement of FIPS-140 standard. After the command executes, the mote should 
-be reset. 
+be reset. Available in mote >= 1.1.x
+
+The zeroize command will render the mote inoperable. It must be re-programmed 
+via SPI or JTAG in order to be useable. 
 */
 dn_err_t dn_whmt_zeroize(dn_whmt_zeroize_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -5214,7 +5243,7 @@ void dn_whmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_ZEROIZE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -5227,6 +5256,274 @@ void dn_whmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    // parse returned value (iff RC==0)
    if (rc==DN_SERIAL_RC_OK) {
       
+   }
+   
+   // call the callback
+   dn_whmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_whmt_vars.busyTx=FALSE;
+}
+
+//===== fileWrite
+
+/**
+The fileWrite command may be used to read data stored in the scratchpad file in 
+the mote filesystem. The size of the data read is limited by the size of a 
+serial API transaction. 
+*/
+dn_err_t dn_whmt_fileWrite(int32_t descriptor, uint16_t offset, uint8_t length, uint8_t* data, uint8_t dataLen, dn_whmt_fileWrite_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_whmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_whmt_vars.cmdId          = CMDID_FILEWRITE;
+   dn_whmt_vars.replyContents  = (uint8_t*)reply;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_write_int32_t(&dn_whmt_vars.outputBuf[DN_FILEWRITE_REQ_OFFS_DESCRIPTOR],descriptor);
+   dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_FILEWRITE_REQ_OFFS_OFFSET],offset);
+   dn_whmt_vars.outputBuf[DN_FILEWRITE_REQ_OFFS_LENGTH] = length;
+   memcpy(&dn_whmt_vars.outputBuf[DN_FILEWRITE_REQ_OFFS_DATA],data,dataLen);
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_FILEWRITE,                                          // cmdId
+      extraFlags,                                               // extraFlags
+      dn_whmt_vars.outputBuf,                                   // payload
+      DN_FILEWRITE_REQ_LEN+dataLen,                             // length
+      dn_whmt_fileWrite_reply                                   // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm not busy transmitting
+      dn_whmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_whmt_fileWrite_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_whmt_fileWrite_rpt* reply;
+   
+   // verify I'm expecting this answer
+   if (dn_whmt_vars.busyTx==FALSE || dn_whmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_FILEWRITE_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_whmt_fileWrite_rpt*)dn_whmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      dn_read_int32_t(&reply->length,&payload[DN_FILEWRITE_REPLY_OFFS_LENGTH]);
+   }
+   
+   // call the callback
+   dn_whmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_whmt_vars.busyTx=FALSE;
+}
+
+//===== fileRead
+
+/**
+The fileRead command may be used to read data stored in the scratchpad file in 
+the mote filesystem. The size of the data read is limited by the size of a 
+serial API transaction. 
+*/
+dn_err_t dn_whmt_fileRead(int32_t descriptor, uint16_t offset, uint8_t length, dn_whmt_fileRead_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_whmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_whmt_vars.cmdId          = CMDID_FILEREAD;
+   dn_whmt_vars.replyContents  = (uint8_t*)reply;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_write_int32_t(&dn_whmt_vars.outputBuf[DN_FILEREAD_REQ_OFFS_DESCRIPTOR],descriptor);
+   dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_FILEREAD_REQ_OFFS_OFFSET],offset);
+   dn_whmt_vars.outputBuf[DN_FILEREAD_REQ_OFFS_LENGTH] = length;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_FILEREAD,                                           // cmdId
+      extraFlags,                                               // extraFlags
+      dn_whmt_vars.outputBuf,                                   // payload
+      DN_FILEREAD_REQ_LEN,                                      // length
+      dn_whmt_fileRead_reply                                    // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm not busy transmitting
+      dn_whmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_whmt_fileRead_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_whmt_fileRead_rpt* reply;
+   
+   // verify I'm expecting this answer
+   if (dn_whmt_vars.busyTx==FALSE || dn_whmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_FILEREAD_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_whmt_fileRead_rpt*)dn_whmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      dn_read_int32_t(&reply->descriptor,&payload[DN_FILEREAD_REPLY_OFFS_DESCRIPTOR]);
+      dn_read_uint16_t(&reply->offset,&payload[DN_FILEREAD_REPLY_OFFS_OFFSET]);
+      reply->length = payload[DN_FILEREAD_REPLY_OFFS_LENGTH];
+      memcpy(&reply->data[0],&payload[DN_FILEREAD_REPLY_OFFS_DATA],len-DN_FILEREAD_REPLY_OFFS_DATA);
+   }
+   
+   // call the callback
+   dn_whmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_whmt_vars.busyTx=FALSE;
+}
+
+//===== fileOpen
+
+/**
+The fileOpen command may be used to open the scratchpad file in the mote 
+filesystem. 
+*/
+dn_err_t dn_whmt_fileOpen(uint8_t* name, uint8_t options, uint16_t size, uint8_t mode, dn_whmt_fileOpen_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_whmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_whmt_vars.cmdId          = CMDID_FILEOPEN;
+   dn_whmt_vars.replyContents  = (uint8_t*)reply;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   memcpy(&dn_whmt_vars.outputBuf[DN_FILEOPEN_REQ_OFFS_NAME],name,12);
+   dn_whmt_vars.outputBuf[DN_FILEOPEN_REQ_OFFS_OPTIONS] = options;
+   dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_FILEOPEN_REQ_OFFS_SIZE],size);
+   dn_whmt_vars.outputBuf[DN_FILEOPEN_REQ_OFFS_MODE] = mode;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_FILEOPEN,                                           // cmdId
+      extraFlags,                                               // extraFlags
+      dn_whmt_vars.outputBuf,                                   // payload
+      DN_FILEOPEN_REQ_LEN,                                      // length
+      dn_whmt_fileOpen_reply                                    // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm not busy transmitting
+      dn_whmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_whmt_fileOpen_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_whmt_fileOpen_rpt* reply;
+   
+   // verify I'm expecting this answer
+   if (dn_whmt_vars.busyTx==FALSE || dn_whmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_FILEOPEN_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_whmt_fileOpen_rpt*)dn_whmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      dn_read_int32_t(&reply->descriptor,&payload[DN_FILEOPEN_REPLY_OFFS_DESCRIPTOR]);
    }
    
    // call the callback

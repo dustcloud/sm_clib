@@ -110,7 +110,7 @@ void dn_ipmg_cancelTx() {
 
 
 dn_err_t dn_ipmg_initiateConnect() {
-   uint8_t rc;
+   dn_err_t rc;
    
    // lock the module
    dn_lock();
@@ -134,8 +134,8 @@ object type, and if the object is a mote the MAC address must be specified
 (otherwise that argument is ignored). 
 */
 dn_err_t dn_ipmg_reset(uint8_t type, uint8_t* macAddress, dn_ipmg_reset_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -153,7 +153,9 @@ dn_err_t dn_ipmg_reset(uint8_t type, uint8_t* macAddress, dn_ipmg_reset_rpt* rep
    dn_ipmg_vars.cmdId          = CMDID_RESET;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_RESET_REQ_OFFS_TYPE] = type;
    memcpy(&dn_ipmg_vars.outputBuf[DN_RESET_REQ_OFFS_MACADDRESS],macAddress,8);
@@ -235,8 +237,8 @@ The subscribe bitmap uses the values of the notification type enumeration. Some
 values are unused to provide backwards compatibility with earlier APIs. 
 */
 dn_err_t dn_ipmg_subscribe(uint32_t filter, uint32_t unackFilter, dn_ipmg_subscribe_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -254,7 +256,9 @@ dn_err_t dn_ipmg_subscribe(uint32_t filter, uint32_t unackFilter, dn_ipmg_subscr
    dn_ipmg_vars.cmdId          = CMDID_SUBSCRIBE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_write_uint32_t(&dn_ipmg_vars.outputBuf[DN_SUBSCRIBE_REQ_OFFS_FILTER],filter);
    dn_write_uint32_t(&dn_ipmg_vars.outputBuf[DN_SUBSCRIBE_REQ_OFFS_UNACKFILTER],unackFilter);
@@ -289,7 +293,7 @@ void dn_ipmg_subscribe_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SUBSCRIBE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -321,8 +325,8 @@ an external application should trigger the networkTime notification using the
 Time Pin. 
 */
 dn_err_t dn_ipmg_getTime(dn_ipmg_getTime_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -340,7 +344,9 @@ dn_err_t dn_ipmg_getTime(dn_ipmg_getTime_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETTIME;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -418,8 +424,8 @@ a number lower than numMotes.
 reallocate bandwidth to Operational motes. 
 */
 dn_err_t dn_ipmg_setNetworkConfig(uint16_t networkId, int8_t apTxPower, uint8_t frameProfile, uint16_t maxMotes, uint16_t baseBandwidth, uint8_t downFrameMultVal, uint8_t numParents, uint8_t ccaMode, uint16_t channelList, bool autoStartNetwork, uint8_t locMode, uint8_t bbMode, uint8_t bbSize, uint8_t isRadioTest, uint16_t bwMult, uint8_t oneChannel, dn_ipmg_setNetworkConfig_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -437,7 +443,9 @@ dn_err_t dn_ipmg_setNetworkConfig(uint16_t networkId, int8_t apTxPower, uint8_t 
    dn_ipmg_vars.cmdId          = CMDID_SETNETWORKCONFIG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_SETNETWORKCONFIG_REQ_OFFS_NETWORKID],networkId);
    dn_ipmg_vars.outputBuf[DN_SETNETWORKCONFIG_REQ_OFFS_APTXPOWER] = (int8_t)apTxPower;
@@ -486,7 +494,7 @@ void dn_ipmg_setNetworkConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload,
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETNETWORKCONFIG_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -515,8 +523,8 @@ The clearStatistics command clears the accumulated network statistics. The
 command does not clear path quality or mote statistics. 
 */
 dn_err_t dn_ipmg_clearStatistics(dn_ipmg_clearStatistics_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -534,7 +542,9 @@ dn_err_t dn_ipmg_clearStatistics(dn_ipmg_clearStatistics_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_CLEARSTATISTICS;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -567,7 +577,7 @@ void dn_ipmg_clearStatistics_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_CLEARSTATISTICS_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -599,8 +609,8 @@ callbackId will be sent when the operation is complete. This change is
 persistent. 
 */
 dn_err_t dn_ipmg_exchangeMoteJoinKey(uint8_t* macAddress, uint8_t* key, dn_ipmg_exchangeMoteJoinKey_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -618,7 +628,9 @@ dn_err_t dn_ipmg_exchangeMoteJoinKey(uint8_t* macAddress, uint8_t* key, dn_ipmg_
    dn_ipmg_vars.cmdId          = CMDID_EXCHANGEMOTEJOINKEY;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_EXCHANGEMOTEJOINKEY_REQ_OFFS_MACADDRESS],macAddress,8);
    memcpy(&dn_ipmg_vars.outputBuf[DN_EXCHANGEMOTEJOINKEY_REQ_OFFS_KEY],key,16);
@@ -685,8 +697,8 @@ commandFinished notification with this callbackId will be sent when the
 operation is complete.This change is persistent. 
 */
 dn_err_t dn_ipmg_exchangeNetworkId(uint16_t id, dn_ipmg_exchangeNetworkId_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -704,7 +716,9 @@ dn_err_t dn_ipmg_exchangeNetworkId(uint16_t id, dn_ipmg_exchangeNetworkId_rpt* r
    dn_ipmg_vars.cmdId          = CMDID_EXCHANGENETWORKID;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_EXCHANGENETWORKID_REQ_OFFS_ID],id);
    
@@ -793,13 +807,14 @@ at the specified channel. The test tone is stopped by resetting the device.
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26.
 
-The stationId is used in packet tests so that a receiver (see radiotestRx) can 
-identify packets from this device in cases where there may be multiple tests 
-running in the same radio space. This field is not required for CM or CW tests. 
+The station ID is a user selectable value. It is used in packet tests so that a 
+receiver (see radiotestRx) can identify packets from this device in cases where 
+there may be multiple tests running in the same radio space. This field is not 
+used for CM or CW tests. 
 */
-dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, dn_ipmg_radiotestTx_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_ipmg_radiotestTx_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -817,7 +832,9 @@ dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repea
    dn_ipmg_vars.cmdId          = CMDID_RADIOTESTTX;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_TESTTYPE] = testType;
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_CHANMASK],chanMask);
@@ -844,6 +861,7 @@ dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repea
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_DELAY_9],delay_9);
    dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_PKLEN_10] = pkLen_10;
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_DELAY_10],delay_10);
+   dn_ipmg_vars.outputBuf[DN_RADIOTESTTX_REQ_OFFS_STATIONID] = stationId;
    
    // send outputBuf
    rc = dn_serial_mg_sendRequest(
@@ -875,7 +893,7 @@ void dn_ipmg_radiotestTx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_RADIOTESTTX_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -904,18 +922,20 @@ The radiotestRx command clears all previously collected statistics and
 initiates radio reception on the specified channel. It may only be executed if 
 the manager has been booted up in radiotest mode (see setNetworkConfig 
 command). During the test, the device keeps statistics about the number of 
-packets received (with and without error). Note that the station id specified 
-in this command must match the transmitter's station id. This is necessary to 
-isolate traffic if multiple tests are running in the same radio space. The test 
-results may be retrieved using the getRadiotestStatistics command.
+packets received (with and without error). The test results may be retrieved 
+using the getRadiotestStatistics command.
+
+The station ID is a user selectable value. It must be set to match the station 
+ID used by the transmitter. Station ID is used to isolate traffic if multiple 
+tests are running in the same radio space.
 
 
 
 Channel numbering is 0-15, corresponding to IEEE 2.4 GHz channels 11-26. 
 */
 dn_err_t dn_ipmg_radiotestRx(uint16_t mask, uint16_t duration, uint8_t stationId, dn_ipmg_radiotestRx_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -933,7 +953,9 @@ dn_err_t dn_ipmg_radiotestRx(uint16_t mask, uint16_t duration, uint8_t stationId
    dn_ipmg_vars.cmdId          = CMDID_RADIOTESTRX;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_RADIOTESTRX_REQ_OFFS_MASK],mask);
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_RADIOTESTRX_REQ_OFFS_DURATION],duration);
@@ -969,7 +991,7 @@ void dn_ipmg_radiotestRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_RADIOTESTRX_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -999,8 +1021,8 @@ may only be executed if the manager has been booted up in radiotest mode (see
 setNetworkConfig command). 
 */
 dn_err_t dn_ipmg_getRadiotestStatistics(dn_ipmg_getRadiotestStatistics_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1018,7 +1040,9 @@ dn_err_t dn_ipmg_getRadiotestStatistics(dn_ipmg_getRadiotestStatistics_rpt* repl
    dn_ipmg_vars.cmdId          = CMDID_GETRADIOTESTSTATISTICS;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -1082,8 +1106,8 @@ The setACLEntry command adds a new entry or updates an existing entry in the
 Access Control List (ACL).This change is persistent. 
 */
 dn_err_t dn_ipmg_setACLEntry(uint8_t* macAddress, uint8_t* joinKey, dn_ipmg_setACLEntry_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1101,7 +1125,9 @@ dn_err_t dn_ipmg_setACLEntry(uint8_t* macAddress, uint8_t* joinKey, dn_ipmg_setA
    dn_ipmg_vars.cmdId          = CMDID_SETACLENTRY;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETACLENTRY_REQ_OFFS_MACADDRESS],macAddress,8);
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETACLENTRY_REQ_OFFS_JOINKEY],joinKey,16);
@@ -1136,7 +1162,7 @@ void dn_ipmg_setACLEntry_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETACLENTRY_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -1169,8 +1195,8 @@ getNextACLEntry with mote A as the argument, your response is the ACL entry for
 mote B, where B is the next mote in the ACL. 
 */
 dn_err_t dn_ipmg_getNextACLEntry(uint8_t* macAddress, dn_ipmg_getNextACLEntry_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1188,7 +1214,9 @@ dn_err_t dn_ipmg_getNextACLEntry(uint8_t* macAddress, dn_ipmg_getNextACLEntry_rp
    dn_ipmg_vars.cmdId          = CMDID_GETNEXTACLENTRY;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETNEXTACLENTRY_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -1254,8 +1282,8 @@ list (ACL). If the macAddress parameter is set to all 0xFFs or all 0x00s, the
 entire ACL is cleared. This change is persistent. 
 */
 dn_err_t dn_ipmg_deleteACLEntry(uint8_t* macAddress, dn_ipmg_deleteACLEntry_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1273,7 +1301,9 @@ dn_err_t dn_ipmg_deleteACLEntry(uint8_t* macAddress, dn_ipmg_deleteACLEntry_rpt*
    dn_ipmg_vars.cmdId          = CMDID_DELETEACLENTRY;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_DELETEACLENTRY_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -1307,7 +1337,7 @@ void dn_ipmg_deleteACLEntry_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_DELETEACLENTRY_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -1340,8 +1370,8 @@ The request is sent using unacknowledged transport, so the mote is not
 guaranteed to receive the request. 
 */
 dn_err_t dn_ipmg_pingMote(uint8_t* macAddress, dn_ipmg_pingMote_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1359,7 +1389,9 @@ dn_err_t dn_ipmg_pingMote(uint8_t* macAddress, dn_ipmg_pingMote_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_PINGMOTE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_PINGMOTE_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -1423,8 +1455,8 @@ The getLog command retrieves diagnostic logs from the manager or a mote
 specified by MAC address. 
 */
 dn_err_t dn_ipmg_getLog(uint8_t* macAddress, dn_ipmg_getLog_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1442,7 +1474,9 @@ dn_err_t dn_ipmg_getLog(uint8_t* macAddress, dn_ipmg_getLog_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETLOG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETLOG_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -1476,7 +1510,7 @@ void dn_ipmg_getLog_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_GETLOG_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -1515,8 +1549,8 @@ comprehensive discussion of the distinction, see the SmartMesh IPNetwork User
 Guide. 
 */
 dn_err_t dn_ipmg_sendData(uint8_t* macAddress, uint8_t priority, uint16_t srcPort, uint16_t dstPort, uint8_t options, uint8_t* data, uint8_t dataLen, dn_ipmg_sendData_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1534,7 +1568,9 @@ dn_err_t dn_ipmg_sendData(uint8_t* macAddress, uint8_t priority, uint16_t srcPor
    dn_ipmg_vars.cmdId          = CMDID_SENDDATA;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SENDDATA_REQ_OFFS_MACADDRESS],macAddress,8);
    dn_ipmg_vars.outputBuf[DN_SENDDATA_REQ_OFFS_PRIORITY] = priority;
@@ -1605,8 +1641,8 @@ must issue the startNetwork command if the autoStartNetwork flag is not set
 (see setNetworkConfig). 
 */
 dn_err_t dn_ipmg_startNetwork(dn_ipmg_startNetwork_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1624,7 +1660,9 @@ dn_err_t dn_ipmg_startNetwork(dn_ipmg_startNetwork_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_STARTNETWORK;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -1657,7 +1695,7 @@ void dn_ipmg_startNetwork_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uin
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_STARTNETWORK_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -1686,8 +1724,8 @@ The getSystemInfo command returns system-level information about the hardware
 and software versions. 
 */
 dn_err_t dn_ipmg_getSystemInfo(dn_ipmg_getSystemInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1705,7 +1743,9 @@ dn_err_t dn_ipmg_getSystemInfo(dn_ipmg_getSystemInfo_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETSYSTEMINFO;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -1782,8 +1822,8 @@ require the neighbor health reports to use the Mote ID for identification.
 Therefore, both identifiers are present in the mote structure. 
 */
 dn_err_t dn_ipmg_getMoteConfig(uint8_t* macAddress, bool next, dn_ipmg_getMoteConfig_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1801,7 +1841,9 @@ dn_err_t dn_ipmg_getMoteConfig(uint8_t* macAddress, bool next, dn_ipmg_getMoteCo
    dn_ipmg_vars.cmdId          = CMDID_GETMOTECONFIG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETMOTECONFIG_REQ_OFFS_MACADDRESS],macAddress,8);
    dn_ipmg_vars.outputBuf[DN_GETMOTECONFIG_REQ_OFFS_NEXT] = next;
@@ -1870,8 +1912,8 @@ void dn_ipmg_getMoteConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
 The getPathInfo command returns parameters of requested path. 
 */
 dn_err_t dn_ipmg_getPathInfo(uint8_t* source, uint8_t* dest, dn_ipmg_getPathInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1889,7 +1931,9 @@ dn_err_t dn_ipmg_getPathInfo(uint8_t* source, uint8_t* dest, dn_ipmg_getPathInfo
    dn_ipmg_vars.cmdId          = CMDID_GETPATHINFO;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETPATHINFO_REQ_OFFS_SOURCE],source,8);
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETPATHINFO_REQ_OFFS_DEST],dest,8);
@@ -1963,8 +2007,8 @@ as a unique identifier for a path. It is only valid when associated with a
 particular mote. 
 */
 dn_err_t dn_ipmg_getNextPathInfo(uint8_t* macAddress, uint8_t filter, uint16_t pathId, dn_ipmg_getNextPathInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -1982,7 +2026,9 @@ dn_err_t dn_ipmg_getNextPathInfo(uint8_t* macAddress, uint8_t filter, uint16_t p
    dn_ipmg_vars.cmdId          = CMDID_GETNEXTPATHINFO;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETNEXTPATHINFO_REQ_OFFS_MACADDRESS],macAddress,8);
    dn_ipmg_vars.outputBuf[DN_GETNEXTPATHINFO_REQ_OFFS_FILTER] = filter;
@@ -2056,8 +2102,8 @@ advertising. The response is a callbackId. A commandFinished notification with
 the callbackId is generated when the command propagation is complete. 
 */
 dn_err_t dn_ipmg_setAdvertising(uint8_t activate, dn_ipmg_setAdvertising_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2075,7 +2121,9 @@ dn_err_t dn_ipmg_setAdvertising(uint8_t activate, dn_ipmg_setAdvertising_rpt* re
    dn_ipmg_vars.cmdId          = CMDID_SETADVERTISING;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_SETADVERTISING_REQ_OFFS_ACTIVATE] = activate;
    
@@ -2144,8 +2192,8 @@ a callbackId. A commandFinished notification with the callbackId is generated
 when the command propagation is complete. 
 */
 dn_err_t dn_ipmg_setDownstreamFrameMode(uint8_t frameMode, dn_ipmg_setDownstreamFrameMode_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2163,7 +2211,9 @@ dn_err_t dn_ipmg_setDownstreamFrameMode(uint8_t frameMode, dn_ipmg_setDownstream
    dn_ipmg_vars.cmdId          = CMDID_SETDOWNSTREAMFRAMEMODE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_SETDOWNSTREAMFRAMEMODE_REQ_OFFS_FRAMEMODE] = frameMode;
    
@@ -2228,8 +2278,8 @@ about the manager API. The statistics counts are cleared together with all
 current statistics using clearStatistics. 
 */
 dn_err_t dn_ipmg_getManagerStatistics(dn_ipmg_getManagerStatistics_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2247,7 +2297,9 @@ dn_err_t dn_ipmg_getManagerStatistics(dn_ipmg_getManagerStatistics_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETMANAGERSTATISTICS;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -2325,8 +2377,8 @@ the trigger, the manager calculates the delay since the trigger and adjust the
 time such that the trigger was received at the specified time value. 
 */
 dn_err_t dn_ipmg_setTime(uint8_t trigger, uint8_t* utcSecs, uint32_t utcUsecs, dn_ipmg_setTime_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2344,7 +2396,9 @@ dn_err_t dn_ipmg_setTime(uint8_t trigger, uint8_t* utcSecs, uint32_t utcUsecs, d
    dn_ipmg_vars.cmdId          = CMDID_SETTIME;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_SETTIME_REQ_OFFS_TRIGGER] = trigger;
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETTIME_REQ_OFFS_UTCSECS],utcSecs,8);
@@ -2380,7 +2434,7 @@ void dn_ipmg_setTime_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETTIME_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2408,8 +2462,8 @@ void dn_ipmg_setTime_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
 The getLicense command returns the current license key. 
 */
 dn_err_t dn_ipmg_getLicense(dn_ipmg_getLicense_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2427,7 +2481,9 @@ dn_err_t dn_ipmg_getLicense(dn_ipmg_getLicense_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETLICENSE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -2492,8 +2548,8 @@ after the device is restarted.If the license parameter is set to all 0x0s, the
 manager restores the default license. This change is persistent. 
 */
 dn_err_t dn_ipmg_setLicense(uint8_t* license, dn_ipmg_setLicense_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2511,7 +2567,9 @@ dn_err_t dn_ipmg_setLicense(uint8_t* license, dn_ipmg_setLicense_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_SETLICENSE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETLICENSE_REQ_OFFS_LICENSE],license,13);
    
@@ -2545,7 +2603,7 @@ void dn_ipmg_setLicense_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETLICENSE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2577,8 +2635,8 @@ line for a particular user role. The user roles are:
 - User - read-write access This change is persistent. 
 */
 dn_err_t dn_ipmg_setCLIUser(uint8_t role, uint8_t* password, dn_ipmg_setCLIUser_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2596,7 +2654,9 @@ dn_err_t dn_ipmg_setCLIUser(uint8_t role, uint8_t* password, dn_ipmg_setCLIUser_
    dn_ipmg_vars.cmdId          = CMDID_SETCLIUSER;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_ipmg_vars.outputBuf[DN_SETCLIUSER_REQ_OFFS_ROLE] = role;
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETCLIUSER_REQ_OFFS_PASSWORD],password,16);
@@ -2631,7 +2691,7 @@ void dn_ipmg_setCLIUser_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETCLIUSER_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2670,8 +2730,8 @@ application to understand 6LoWPAN encapsulation. For a more comprehensive
 discussion of the distinction, see the SmartMesh IP Network User Guide. 
 */
 dn_err_t dn_ipmg_sendIP(uint8_t* macAddress, uint8_t priority, uint8_t options, uint8_t encryptedOffset, uint8_t* data, uint8_t dataLen, dn_ipmg_sendIP_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2689,7 +2749,9 @@ dn_err_t dn_ipmg_sendIP(uint8_t* macAddress, uint8_t priority, uint8_t options, 
    dn_ipmg_vars.cmdId          = CMDID_SENDIP;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SENDIP_REQ_OFFS_MACADDRESS],macAddress,8);
    dn_ipmg_vars.outputBuf[DN_SENDIP_REQ_OFFS_PRIORITY] = priority;
@@ -2758,8 +2820,8 @@ clears the ACL. This command does not affect the license.This change is
 persistent. 
 */
 dn_err_t dn_ipmg_restoreFactoryDefaults(dn_ipmg_restoreFactoryDefaults_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2777,7 +2839,9 @@ dn_err_t dn_ipmg_restoreFactoryDefaults(dn_ipmg_restoreFactoryDefaults_rpt* repl
    dn_ipmg_vars.cmdId          = CMDID_RESTOREFACTORYDEFAULTS;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -2810,7 +2874,7 @@ void dn_ipmg_restoreFactoryDefaults_reply(uint8_t cmdId, uint8_t rc, uint8_t* pa
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_RESTOREFACTORYDEFAULTS_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -2838,8 +2902,8 @@ void dn_ipmg_restoreFactoryDefaults_reply(uint8_t cmdId, uint8_t rc, uint8_t* pa
 The getMoteInfo command returns dynamic information for the specified mote. 
 */
 dn_err_t dn_ipmg_getMoteInfo(uint8_t* macAddress, dn_ipmg_getMoteInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2857,7 +2921,9 @@ dn_err_t dn_ipmg_getMoteInfo(uint8_t* macAddress, dn_ipmg_getMoteInfo_rpt* reply
    dn_ipmg_vars.cmdId          = CMDID_GETMOTEINFO;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETMOTEINFO_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -2930,8 +2996,8 @@ The getNetworkConfig command returns general network configuration parameters,
 including the Network ID, bandwidth parameters and number of motes. 
 */
 dn_err_t dn_ipmg_getNetworkConfig(dn_ipmg_getNetworkConfig_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -2949,7 +3015,9 @@ dn_err_t dn_ipmg_getNetworkConfig(dn_ipmg_getNetworkConfig_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETNETWORKCONFIG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -3026,8 +3094,8 @@ void dn_ipmg_getNetworkConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload,
 The getNetworkInfo command returns dynamic network information and statistics. 
 */
 dn_err_t dn_ipmg_getNetworkInfo(dn_ipmg_getNetworkInfo_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3045,7 +3113,9 @@ dn_err_t dn_ipmg_getNetworkInfo(dn_ipmg_getNetworkInfo_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETNETWORKINFO;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -3121,8 +3191,8 @@ ID). The command returns the same response structure as the getMoteConfig
 command. 
 */
 dn_err_t dn_ipmg_getMoteConfigById(uint16_t moteId, dn_ipmg_getMoteConfigById_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3140,7 +3210,9 @@ dn_err_t dn_ipmg_getMoteConfigById(uint16_t moteId, dn_ipmg_getMoteConfigById_rp
    dn_ipmg_vars.cmdId          = CMDID_GETMOTECONFIGBYID;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_GETMOTECONFIGBYID_REQ_OFFS_MOTEID],moteId);
    
@@ -3209,8 +3281,8 @@ The setCommonJoinKey command will set a new value for the common join key. The
 common join key is used to decrypt join messages only if the ACL is empty. 
 */
 dn_err_t dn_ipmg_setCommonJoinKey(uint8_t* key, dn_ipmg_setCommonJoinKey_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3228,7 +3300,9 @@ dn_err_t dn_ipmg_setCommonJoinKey(uint8_t* key, dn_ipmg_setCommonJoinKey_rpt* re
    dn_ipmg_vars.cmdId          = CMDID_SETCOMMONJOINKEY;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETCOMMONJOINKEY_REQ_OFFS_KEY],key,16);
    
@@ -3262,7 +3336,7 @@ void dn_ipmg_setCommonJoinKey_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload,
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETCOMMONJOINKEY_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3291,8 +3365,8 @@ The getIPConfig command returns the manager's IP configuration parameters,
 including the IPv6 address and mask. 
 */
 dn_err_t dn_ipmg_getIPConfig(dn_ipmg_getIPConfig_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3310,7 +3384,9 @@ dn_err_t dn_ipmg_getIPConfig(dn_ipmg_getIPConfig_rpt* reply) {
    dn_ipmg_vars.cmdId          = CMDID_GETIPCONFIG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    
    // send outputBuf
@@ -3376,8 +3452,8 @@ address are ignored, and lower 8 bytes of the mask field are reserved and
 should be set to 0.This change is persistent. 
 */
 dn_err_t dn_ipmg_setIPConfig(uint8_t* ipv6Address, uint8_t* mask, dn_ipmg_setIPConfig_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3395,7 +3471,9 @@ dn_err_t dn_ipmg_setIPConfig(uint8_t* ipv6Address, uint8_t* mask, dn_ipmg_setIPC
    dn_ipmg_vars.cmdId          = CMDID_SETIPCONFIG;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETIPCONFIG_REQ_OFFS_IPV6ADDRESS],ipv6Address,16);
    memcpy(&dn_ipmg_vars.outputBuf[DN_SETIPCONFIG_REQ_OFFS_MASK],mask,16);
@@ -3430,7 +3508,7 @@ void dn_ipmg_setIPConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_SETIPCONFIG_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3459,8 +3537,8 @@ The deleteMote command deletes a mote from the manager's list. A mote can only
 be deleted if it in the Lost or Unknown states. This change is persistent. 
 */
 dn_err_t dn_ipmg_deleteMote(uint8_t* macAddress, dn_ipmg_deleteMote_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3478,7 +3556,9 @@ dn_err_t dn_ipmg_deleteMote(uint8_t* macAddress, dn_ipmg_deleteMote_rpt* reply) 
    dn_ipmg_vars.cmdId          = CMDID_DELETEMOTE;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_DELETEMOTE_REQ_OFFS_MACADDRESS],macAddress,8);
    
@@ -3512,7 +3592,7 @@ void dn_ipmg_deleteMote_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
    }
    
    // verify length
-   if (rc==DN_SERIAL_RC_OK && len<DN_DELETEMOTE_REPLY_LEN) {
+   if (rc==DN_SERIAL_RC_OK) {
       return;
    }
    
@@ -3545,8 +3625,8 @@ links returned with priorresponse, until the command returns RC_END_OF_LIST
 response code. Note that links assigned to a mote may change between API calls. 
 */
 dn_err_t dn_ipmg_getMoteLinks(uint8_t* macAddress, uint16_t idx, dn_ipmg_getMoteLinks_rpt* reply) {
-   uint8_t extraFlags;
-   uint8_t rc;
+   uint8_t    extraFlags;
+   dn_err_t   rc;
    
    // lock the module
    dn_lock();
@@ -3564,7 +3644,9 @@ dn_err_t dn_ipmg_getMoteLinks(uint8_t* macAddress, uint16_t idx, dn_ipmg_getMote
    dn_ipmg_vars.cmdId          = CMDID_GETMOTELINKS;
    dn_ipmg_vars.replyContents  = (uint8_t*)reply;
    
-
+   // extraFlags
+   extraFlags = 0x00;
+   
    // build outputBuf
    memcpy(&dn_ipmg_vars.outputBuf[DN_GETMOTELINKS_REQ_OFFS_MACADDRESS],macAddress,8);
    dn_write_uint16_t(&dn_ipmg_vars.outputBuf[DN_GETMOTELINKS_REQ_OFFS_IDX],idx);
@@ -3750,11 +3832,6 @@ void dn_ipmg_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uin
                break;
                
             case DN_EVENTID_EVENTNETWORKRESET:
-               
-               // verify len
-               if (len<DN_EVENTNETWORKRESET_NOTIF_LEN) {
-                   return;
-               }
                
                // cast notifBuf
                notif_eventNetworkReset = (dn_ipmg_eventNetworkReset_nt*)dn_ipmg_vars.notifBuf;

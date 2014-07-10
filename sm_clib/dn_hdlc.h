@@ -72,9 +72,9 @@ typedef void (*dn_hdlc_rxFrame_cbt)(uint8_t* rxFrame, uint8_t rxFrameLen);
 
 void dn_hdlc_init(dn_hdlc_rxFrame_cbt rxFrame_cb);
 // output
-inline void dn_hdlc_outputOpen();
-inline void dn_hdlc_outputWrite(uint8_t b);
-inline void dn_hdlc_outputClose();
+void dn_hdlc_outputOpen();
+void dn_hdlc_outputWrite(uint8_t b);
+void dn_hdlc_outputClose();
 
 #ifdef __cplusplus
 }

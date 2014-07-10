@@ -1,16 +1,15 @@
 /*
 Copyright (c) 2014, Dust Networks.  All rights reserved.
 
-Arduino library to connect to a SmartMesh IP mote and periodically send data.
+Arduino library to connect to a SmartMesh IP manager.
 
 This library is an Arduino "wrapper" around the generic SmartMesh C library.
 
 This library will:
-- Connect to the SmartMesh IP mote over its serial port.
-- Have the SmartMesh IP mote connect to a SmartMesh IP network, open and bind a
-  UDP socket
-- Periodically, invoke a data generation function and send the generated
-  payload to the specified IPv6 address and UDP port.
+- Connect to the SmartMesh IP manager.
+- Subscribe to data notifications.
+- Get the MAC address of all nodes in the network.
+- Send an OAP command to blink each node's LED in a round-robin fashion.
   
 \license See attached DN_LICENSE.txt.
 */

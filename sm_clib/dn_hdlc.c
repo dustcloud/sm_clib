@@ -33,9 +33,9 @@ dn_hdlc_vars_t dn_hdlc_vars;
 // callback handlers
 void dn_hdlc_rxByte(uint8_t rxbyte);
 // input
-inline void dn_hdlc_inputOpen();
-inline void dn_hdlc_inputWrite(uint8_t b);
-inline void dn_hdlc_inputClose();
+void dn_hdlc_inputOpen();
+void dn_hdlc_inputWrite(uint8_t b);
+void dn_hdlc_inputClose();
 // helpers
 uint16_t dn_hdlc_crcIteration(uint16_t crc, uint8_t data_byte);
 
@@ -131,7 +131,7 @@ void dn_hdlc_rxByte(uint8_t rxbyte) {
 /**
 \brief Start an HDLC frame in the output buffer.
 */
-inline void dn_hdlc_outputOpen() {
+void dn_hdlc_outputOpen() {
    // initialize the value of the CRC
    dn_hdlc_vars.outputCrc = DN_HDLC_CRCINIT;
    
@@ -144,7 +144,7 @@ inline void dn_hdlc_outputOpen() {
 
 \param[in] b The byte to add.
 */
-inline void dn_hdlc_outputWrite(uint8_t b) {
+void dn_hdlc_outputWrite(uint8_t b) {
    
    // iterate through CRC calculator
    dn_hdlc_vars.outputCrc = dn_hdlc_crcIteration(dn_hdlc_vars.outputCrc,b);
@@ -162,7 +162,7 @@ inline void dn_hdlc_outputWrite(uint8_t b) {
 /**
 \brief Finalize the outgoing HDLC frame.
 */
-inline void dn_hdlc_outputClose() {
+void dn_hdlc_outputClose() {
    uint16_t   finalCrc;
    
    // finalize the calculation of the CRC
@@ -184,7 +184,7 @@ inline void dn_hdlc_outputClose() {
 /**
 \brief Start an HDLC frame in the input buffer.
 */
-inline void dn_hdlc_inputOpen() {
+void dn_hdlc_inputOpen() {
    // reset the input buffer index
    dn_hdlc_vars.inputBufFill = 0;
    
@@ -197,7 +197,7 @@ inline void dn_hdlc_inputOpen() {
 
 \param[in] b The byte to add.
 */
-inline void dn_hdlc_inputWrite(uint8_t b) {
+void dn_hdlc_inputWrite(uint8_t b) {
    if (b==DN_HDLC_ESCAPE) {
       dn_hdlc_vars.inputEscaping = TRUE;
    } else {
@@ -218,7 +218,7 @@ inline void dn_hdlc_inputWrite(uint8_t b) {
 /**
 \brief Finalize the incoming HDLC frame.
 */
-inline void dn_hdlc_inputClose() {
+void dn_hdlc_inputClose() {
    
    // verify the validity of the frame
    if (dn_hdlc_vars.inputCrc==DN_HDLC_CRCGOOD) {

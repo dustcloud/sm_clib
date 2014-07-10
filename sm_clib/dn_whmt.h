@@ -46,6 +46,9 @@ C library to connect to a SmartMesh WirelessHART Mote.
 #define CMDID_TESTRADIOTXEXT                0x13
 #define CMDID_TESTRADIORXEXT                0x14
 #define CMDID_ZEROIZE                       0x15
+#define CMDID_FILEWRITE                     0x17
+#define CMDID_FILEREAD                      0x18
+#define CMDID_FILEOPEN                      0x19
 
 //===== command IDs (notifications)
 #define CMDID_TIMEINDICATION           0xd
@@ -302,7 +305,8 @@ C library to connect to a SmartMesh WirelessHART Mote.
 #define DN_TESTRADIOTXEXT_REQ_OFFS_DELAY_9                           32
 #define DN_TESTRADIOTXEXT_REQ_OFFS_PKLEN_10                          34
 #define DN_TESTRADIOTXEXT_REQ_OFFS_DELAY_10                          35
-#define DN_TESTRADIOTXEXT_REQ_LEN                                    37
+#define DN_TESTRADIOTXEXT_REQ_OFFS_STATIONID                         37
+#define DN_TESTRADIOTXEXT_REQ_LEN                                    38
 
 // testRadioRxExt
 #define DN_TESTRADIORXEXT_REQ_OFFS_CHANNELMASK                       0
@@ -312,6 +316,26 @@ C library to connect to a SmartMesh WirelessHART Mote.
 
 // zeroize
 #define DN_ZEROIZE_REQ_LEN                                           0
+
+// fileWrite
+#define DN_FILEWRITE_REQ_OFFS_DESCRIPTOR                             0
+#define DN_FILEWRITE_REQ_OFFS_OFFSET                                 4
+#define DN_FILEWRITE_REQ_OFFS_LENGTH                                 6
+#define DN_FILEWRITE_REQ_OFFS_DATA                                   7
+#define DN_FILEWRITE_REQ_LEN                                         7
+
+// fileRead
+#define DN_FILEREAD_REQ_OFFS_DESCRIPTOR                              0
+#define DN_FILEREAD_REQ_OFFS_OFFSET                                  4
+#define DN_FILEREAD_REQ_OFFS_LENGTH                                  6
+#define DN_FILEREAD_REQ_LEN                                          7
+
+// fileOpen
+#define DN_FILEOPEN_REQ_OFFS_NAME                                    0
+#define DN_FILEOPEN_REQ_OFFS_OPTIONS                                 12
+#define DN_FILEOPEN_REQ_OFFS_SIZE                                    13
+#define DN_FILEOPEN_REQ_OFFS_MODE                                    15
+#define DN_FILEOPEN_REQ_LEN                                          16
 
 //===== format of replies
 
@@ -522,6 +546,21 @@ C library to connect to a SmartMesh WirelessHART Mote.
 
 // zeroize
 #define DN_ZEROIZE_REPLY_LEN                                         0
+
+// fileWrite
+#define DN_FILEWRITE_REPLY_OFFS_LENGTH                               0
+#define DN_FILEWRITE_REPLY_LEN                                       4
+
+// fileRead
+#define DN_FILEREAD_REPLY_OFFS_DESCRIPTOR                            0
+#define DN_FILEREAD_REPLY_OFFS_OFFSET                                4
+#define DN_FILEREAD_REPLY_OFFS_LENGTH                                6
+#define DN_FILEREAD_REPLY_OFFS_DATA                                  7
+#define DN_FILEREAD_REPLY_LEN                                        7
+
+// fileOpen
+#define DN_FILEOPEN_REPLY_OFFS_DESCRIPTOR                            0
+#define DN_FILEOPEN_REPLY_LEN                                        4
 
 //===== format of notifications
 
@@ -831,6 +870,24 @@ typedef struct {
    uint8_t    RC;
 } dn_whmt_zeroize_rpt;
 
+typedef struct {
+   uint8_t    RC;
+   int32_t    length;
+} dn_whmt_fileWrite_rpt;
+
+typedef struct {
+   uint8_t    RC;
+   int32_t    descriptor;
+   uint16_t   offset;
+   uint8_t    length;
+   uint8_t    data[MAX_FRAME_LENGTH];
+} dn_whmt_fileRead_rpt;
+
+typedef struct {
+   uint8_t    RC;
+   int32_t    descriptor;
+} dn_whmt_fileOpen_rpt;
+
 //=== notification types
 
 typedef struct {
@@ -945,9 +1002,12 @@ dn_err_t dn_whmt_testRadioTx(uint8_t channel, uint16_t numPackets, dn_whmt_testR
 dn_err_t dn_whmt_testRadioRx(uint8_t channel, uint16_t time, dn_whmt_testRadioRx_rpt* reply);
 dn_err_t dn_whmt_clearNV(dn_whmt_clearNV_rpt* reply);
 dn_err_t dn_whmt_search(dn_whmt_search_rpt* reply);
-dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, dn_whmt_testRadioTxExt_rpt* reply);
+dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_whmt_testRadioTxExt_rpt* reply);
 dn_err_t dn_whmt_testRadioRxExt(uint16_t channelMask, uint16_t time, uint8_t stationId, dn_whmt_testRadioRxExt_rpt* reply);
 dn_err_t dn_whmt_zeroize(dn_whmt_zeroize_rpt* reply);
+dn_err_t dn_whmt_fileWrite(int32_t descriptor, uint16_t offset, uint8_t length, uint8_t* data, uint8_t dataLen, dn_whmt_fileWrite_rpt* reply);
+dn_err_t dn_whmt_fileRead(int32_t descriptor, uint16_t offset, uint8_t length, dn_whmt_fileRead_rpt* reply);
+dn_err_t dn_whmt_fileOpen(uint8_t* name, uint8_t options, uint16_t size, uint8_t mode, dn_whmt_fileOpen_rpt* reply);
 
 #ifdef __cplusplus
 }

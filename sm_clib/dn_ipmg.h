@@ -174,7 +174,8 @@ C library to connect to a SmartMesh IP Manager.
 #define DN_RADIOTESTTX_REQ_OFFS_DELAY_9                              32
 #define DN_RADIOTESTTX_REQ_OFFS_PKLEN_10                             34
 #define DN_RADIOTESTTX_REQ_OFFS_DELAY_10                             35
-#define DN_RADIOTESTTX_REQ_LEN                                       37
+#define DN_RADIOTESTTX_REQ_OFFS_STATIONID                            37
+#define DN_RADIOTESTTX_REQ_LEN                                       38
 
 // radiotestRx
 #define DN_RADIOTESTRX_REQ_OFFS_MASK                                 0
@@ -1139,7 +1140,7 @@ dn_err_t dn_ipmg_setNetworkConfig(uint16_t networkId, int8_t apTxPower, uint8_t 
 dn_err_t dn_ipmg_clearStatistics(dn_ipmg_clearStatistics_rpt* reply);
 dn_err_t dn_ipmg_exchangeMoteJoinKey(uint8_t* macAddress, uint8_t* key, dn_ipmg_exchangeMoteJoinKey_rpt* reply);
 dn_err_t dn_ipmg_exchangeNetworkId(uint16_t id, dn_ipmg_exchangeNetworkId_rpt* reply);
-dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, dn_ipmg_radiotestTx_rpt* reply);
+dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_ipmg_radiotestTx_rpt* reply);
 dn_err_t dn_ipmg_radiotestRx(uint16_t mask, uint16_t duration, uint8_t stationId, dn_ipmg_radiotestRx_rpt* reply);
 dn_err_t dn_ipmg_getRadiotestStatistics(dn_ipmg_getRadiotestStatistics_rpt* reply);
 dn_err_t dn_ipmg_setACLEntry(uint8_t* macAddress, uint8_t* joinKey, dn_ipmg_setACLEntry_rpt* reply);
