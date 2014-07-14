@@ -3170,9 +3170,6 @@ void dn_ipmg_getNetworkInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       dn_read_uint32_t(&reply->netLatency,&payload[DN_GETNETWORKINFO_REPLY_OFFS_NETLATENCY]);
       reply->netState = payload[DN_GETNETWORKINFO_REPLY_OFFS_NETSTATE];
       memcpy(&reply->ipv6Address[0],&payload[DN_GETNETWORKINFO_REPLY_OFFS_IPV6ADDRESS],16);
-      dn_read_uint32_t(&reply->numLostPackets,&payload[DN_GETNETWORKINFO_REPLY_OFFS_NUMLOSTPACKETS]);
-      memcpy(&reply->numArrivedPackets[0],&payload[DN_GETNETWORKINFO_REPLY_OFFS_NUMARRIVEDPACKETS],8);
-      reply->maxNumbHops = payload[DN_GETNETWORKINFO_REPLY_OFFS_MAXNUMBHOPS];
    }
    
    // call the callback

@@ -90,20 +90,6 @@ C library to connect to a SmartMesh IP Manager.
 
 //===== format of requests
 
-// mux_hello
-#define DN_MUX_HELLO_REQ_OFFS_VERSION                                0
-#define DN_MUX_HELLO_REQ_OFFS_SECRET                                 1
-#define DN_MUX_HELLO_REQ_LEN                                         9
-
-// hello
-#define DN_HELLO_REQ_OFFS_VERSION                                    0
-#define DN_HELLO_REQ_OFFS_CLISEQNO                                   1
-#define DN_HELLO_REQ_OFFS_MODE                                       2
-#define DN_HELLO_REQ_LEN                                             3
-
-// hello_response
-#define DN_HELLO_RESPONSE_REQ_LEN                                    0
-
 // reset
 #define DN_RESET_REQ_OFFS_TYPE                                       0
 #define DN_RESET_REQ_OFFS_MACADDRESS                                 1
@@ -504,10 +490,7 @@ C library to connect to a SmartMesh IP Manager.
 #define DN_GETNETWORKINFO_REPLY_OFFS_NETLATENCY                      8
 #define DN_GETNETWORKINFO_REPLY_OFFS_NETSTATE                        12
 #define DN_GETNETWORKINFO_REPLY_OFFS_IPV6ADDRESS                     13
-#define DN_GETNETWORKINFO_REPLY_OFFS_NUMLOSTPACKETS                  29
-#define DN_GETNETWORKINFO_REPLY_OFFS_NUMARRIVEDPACKETS               33
-#define DN_GETNETWORKINFO_REPLY_OFFS_MAXNUMBHOPS                     41
-#define DN_GETNETWORKINFO_REPLY_LEN                                  42
+#define DN_GETNETWORKINFO_REPLY_LEN                                  29
 
 // getMoteConfigById
 #define DN_GETMOTECONFIGBYID_REPLY_OFFS_MACADDRESS                   0
@@ -912,9 +895,6 @@ typedef struct {
    uint32_t   netLatency;
    uint8_t    netState;
    uint8_t    ipv6Address[16];
-   uint32_t   numLostPackets;
-   uint8_t    numArrivedPackets[8];
-   uint8_t    maxNumbHops;
 } dn_ipmg_getNetworkInfo_rpt;
 
 typedef struct {
