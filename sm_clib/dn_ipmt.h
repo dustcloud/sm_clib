@@ -42,6 +42,7 @@ static const uint8_t ipv6Addr_manager[16] = {
 #define CMDID_SEARCH                        0x24
 #define CMDID_TESTRADIOTXEXT                0x28
 #define CMDID_ZEROIZE                       0x29
+#define CMDID_SOCKETINFO                    0x2b
 
 //===== command IDs (notifications)
 #define CMDID_TIMEINDICATION           0xd
@@ -264,6 +265,10 @@ static const uint8_t ipv6Addr_manager[16] = {
 // zeroize
 #define DN_ZEROIZE_REQ_LEN                                           0
 
+// socketInfo
+#define DN_SOCKETINFO_REQ_OFFS_INDEX                                 0
+#define DN_SOCKETINFO_REQ_LEN                                        1
+
 //===== format of replies
 
 // setParameter_macAddress
@@ -447,6 +452,14 @@ static const uint8_t ipv6Addr_manager[16] = {
 
 // zeroize
 #define DN_ZEROIZE_REPLY_LEN                                         0
+
+// socketInfo
+#define DN_SOCKETINFO_REPLY_OFFS_INDEX                               0
+#define DN_SOCKETINFO_REPLY_OFFS_SOCKETID                            1
+#define DN_SOCKETINFO_REPLY_OFFS_PROTOCOL                            2
+#define DN_SOCKETINFO_REPLY_OFFS_BINDSTATE                           3
+#define DN_SOCKETINFO_REPLY_OFFS_PORT                                4
+#define DN_SOCKETINFO_REPLY_LEN                                      6
 
 //===== format of notifications
 
@@ -715,6 +728,15 @@ typedef struct {
    uint8_t    RC;
 } dn_ipmt_zeroize_rpt;
 
+typedef struct {
+   uint8_t    RC;
+   uint8_t    index;
+   uint8_t    socketId;
+   uint8_t    protocol;
+   uint8_t    bindState;
+   uint16_t   port;
+} dn_ipmt_socketInfo_rpt;
+
 //=== notification types
 
 typedef struct {
@@ -735,6 +757,7 @@ typedef struct {
    uint8_t    socketId;
    uint8_t    srcAddr[16];
    uint16_t   srcPort;
+   uint8_t    payloadLen;
    uint8_t    payload[MAX_FRAME_LENGTH];
 } dn_ipmt_receive_nt;
 
@@ -815,6 +838,7 @@ dn_err_t dn_ipmt_sendTo(uint8_t socketId, uint8_t* destIP, uint16_t destPort, ui
 dn_err_t dn_ipmt_search(dn_ipmt_search_rpt* reply);
 dn_err_t dn_ipmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t repeatCnt, int8_t txPower, uint8_t seqSize, uint8_t pkLen_1, uint16_t delay_1, uint8_t pkLen_2, uint16_t delay_2, uint8_t pkLen_3, uint16_t delay_3, uint8_t pkLen_4, uint16_t delay_4, uint8_t pkLen_5, uint16_t delay_5, uint8_t pkLen_6, uint16_t delay_6, uint8_t pkLen_7, uint16_t delay_7, uint8_t pkLen_8, uint16_t delay_8, uint8_t pkLen_9, uint16_t delay_9, uint8_t pkLen_10, uint16_t delay_10, uint8_t stationId, dn_ipmt_testRadioTxExt_rpt* reply);
 dn_err_t dn_ipmt_zeroize(dn_ipmt_zeroize_rpt* reply);
+dn_err_t dn_ipmt_socketInfo(uint8_t index, dn_ipmt_socketInfo_rpt* reply);
 
 #ifdef __cplusplus
 }

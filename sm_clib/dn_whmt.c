@@ -59,6 +59,7 @@ void dn_whmt_setNVParameter_ttl_reply(uint8_t cmdId, uint8_t rc, uint8_t* payloa
 void dn_whmt_setNVParameter_HARTantennaGain_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_setNVParameter_OTAPlockout_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_setNVParameter_hrCounterMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_whmt_setNVParameter_autojoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_setNVParameter_compliantMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_setNVParameter_lock_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_getNVParameter_macAddress_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
@@ -69,6 +70,7 @@ void dn_whmt_getNVParameter_ttl_reply(uint8_t cmdId, uint8_t rc, uint8_t* payloa
 void dn_whmt_getNVParameter_HARTantennaGain_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_getNVParameter_OTAPlockout_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_getNVParameter_hrCounterMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_whmt_getNVParameter_autojoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_getNVParameter_compliantMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_getNVParameter_lock_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_whmt_send_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
@@ -179,7 +181,7 @@ dn_err_t dn_whmt_setParameter_txPower(int8_t txPower, dn_whmt_setParameter_txPow
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -282,7 +284,7 @@ dn_err_t dn_whmt_setParameter_joinDutyCycle(uint8_t dutyCycle, dn_whmt_setParame
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -382,7 +384,7 @@ dn_err_t dn_whmt_setParameter_batteryLife(uint16_t batteryLife, uint8_t powerSta
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -501,7 +503,7 @@ dn_err_t dn_whmt_setParameter_service(uint8_t serviceId, uint8_t serviceReqFlags
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -598,7 +600,7 @@ dn_err_t dn_whmt_setParameter_hartDeviceStatus(uint8_t hartDevStatus, dn_whmt_se
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -694,7 +696,7 @@ dn_err_t dn_whmt_setParameter_hartDeviceInfo(uint8_t* hartCmd0, uint8_t* hartCmd
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -795,7 +797,7 @@ dn_err_t dn_whmt_setParameter_eventMask(uint32_t eventMask, dn_whmt_setParameter
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -895,7 +897,7 @@ dn_err_t dn_whmt_setParameter_writeProtect(uint8_t writeProtect, dn_whmt_setPara
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -994,7 +996,7 @@ dn_err_t dn_whmt_setParameter_lock(uint8_t code, uint16_t master, dn_whmt_setPar
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1088,7 +1090,7 @@ dn_err_t dn_whmt_getParameter_joinDutyCycle(dn_whmt_getParameter_joinDutyCycle_r
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1185,7 +1187,7 @@ dn_err_t dn_whmt_getParameter_service(uint8_t serviceId, dn_whmt_getParameter_se
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1284,7 +1286,7 @@ dn_err_t dn_whmt_getParameter_moteInfo(dn_whmt_getParameter_moteInfo_rpt* reply)
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1385,7 +1387,7 @@ dn_err_t dn_whmt_getParameter_networkInfo(dn_whmt_getParameter_networkInfo_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1482,7 +1484,7 @@ dn_err_t dn_whmt_getParameter_moteStatus(dn_whmt_getParameter_moteStatus_rpt* re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1579,7 +1581,7 @@ dn_err_t dn_whmt_getParameter_time(dn_whmt_getParameter_time_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1675,7 +1677,7 @@ dn_err_t dn_whmt_getParameter_charge(dn_whmt_getParameter_charge_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1773,7 +1775,7 @@ dn_err_t dn_whmt_getParameter_testRadioRxStats(dn_whmt_getParameter_testRadioRxS
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1869,7 +1871,7 @@ dn_err_t dn_whmt_getParameter_lock(dn_whmt_getParameter_lock_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -1967,7 +1969,7 @@ dn_err_t dn_whmt_setNVParameter_macAddress(uint8_t memory, uint8_t* macAddr, dn_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2066,7 +2068,7 @@ dn_err_t dn_whmt_setNVParameter_joinKey(uint8_t memory, uint8_t* joinKey, dn_whm
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2174,7 +2176,7 @@ dn_err_t dn_whmt_setNVParameter_networkId(uint8_t memory, uint16_t networkId, dn
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2277,7 +2279,7 @@ dn_err_t dn_whmt_setNVParameter_txPower(uint8_t memory, int8_t txPower, dn_whmt_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2378,7 +2380,7 @@ dn_err_t dn_whmt_setNVParameter_powerInfo(uint8_t memory, uint8_t powerSource, u
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2484,7 +2486,7 @@ dn_err_t dn_whmt_setNVParameter_ttl(uint8_t memory, uint8_t timeToLive, dn_whmt_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2586,7 +2588,7 @@ dn_err_t dn_whmt_setNVParameter_HARTantennaGain(uint8_t memory, int8_t antennaGa
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2690,7 +2692,7 @@ dn_err_t dn_whmt_setNVParameter_OTAPlockout(uint8_t memory, uint8_t otapLockout,
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2792,7 +2794,7 @@ dn_err_t dn_whmt_setNVParameter_hrCounterMode(uint8_t memory, uint8_t hrCounterM
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2832,6 +2834,111 @@ void dn_whmt_setNVParameter_hrCounterMode_reply(uint8_t cmdId, uint8_t rc, uint8
    // parse returned value (iff RC==0)
    if (rc==DN_SERIAL_RC_OK) {
       
+   }
+   
+   // call the callback
+   dn_whmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_whmt_vars.busyTx=FALSE;
+}
+
+//===== setNVParameter_autojoin
+
+/**
+The setNVParameter<autojoin> command allows the microprocessor to change 
+between automatic and manual joining by the mote's networking stack. In manual 
+mode, an explicit join command from the application is required to initiate 
+joining. This setting is persistent and takes effect after mote reset.
+
+Note that auto join mode must not be set if the application is also configured 
+to join (e.g combining 'auto join' with 'master' mode will result in mote not 
+joining). 
+*/
+dn_err_t dn_whmt_setNVParameter_autojoin(uint8_t memory, uint32_t reserved, uint8_t nvParamId, uint8_t autojoin, dn_whmt_setNVParameter_autojoin_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_whmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_whmt_vars.cmdId          = CMDID_SETNVPARAMETER;
+   dn_whmt_vars.replyContents  = (uint8_t*)reply;
+   dn_whmt_vars.paramId        = PARAMID_AUTOJOIN;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   if (memory==DN_MEMORY_NV_RAM) {
+      extraFlags            |= (1<<7);
+   }
+   
+   // build outputBuf
+   dn_whmt_vars.outputBuf[0] = PARAMID_AUTOJOIN;
+   dn_write_uint32_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED],reserved);
+   dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID] = nvParamId;
+   dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_AUTOJOIN] = autojoin;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_SETNVPARAMETER,                                     // cmdId
+      extraFlags,                                               // extraFlags
+      dn_whmt_vars.outputBuf,                                   // payload
+      DN_SETNVPARAMETER_AUTOJOIN_REQ_LEN,                       // length
+      dn_whmt_setNVParameter_autojoin_reply                     // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm now busy transmitting
+      dn_whmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_whmt_setNVParameter_autojoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_whmt_setNVParameter_autojoin_rpt* reply;
+   uint8_t paramId;
+   
+   // verify I'm expecting this answer
+   if (dn_whmt_vars.busyTx==FALSE || dn_whmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify I'm expecting this paramId
+   paramId = payload[0];
+   if (paramId!=dn_whmt_vars.paramId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_SETNVPARAMETER_AUTOJOIN_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_whmt_setNVParameter_autojoin_rpt*)dn_whmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      reply->nvParamId = payload[DN_SETNVPARAMETER_AUTOJOIN_REPLY_OFFS_NVPARAMID];
    }
    
    // call the callback
@@ -2894,7 +3001,7 @@ dn_err_t dn_whmt_setNVParameter_compliantMode(uint8_t memory, uint8_t compliantM
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -2997,7 +3104,7 @@ dn_err_t dn_whmt_setNVParameter_lock(uint8_t memory, uint8_t code, uint16_t mast
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3093,7 +3200,7 @@ dn_err_t dn_whmt_getNVParameter_macAddress(dn_whmt_getNVParameter_macAddress_rpt
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3186,7 +3293,7 @@ dn_err_t dn_whmt_getNVParameter_networkId(dn_whmt_getNVParameter_networkId_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3279,7 +3386,7 @@ dn_err_t dn_whmt_getNVParameter_txPower(dn_whmt_getNVParameter_txPower_rpt* repl
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3372,7 +3479,7 @@ dn_err_t dn_whmt_getNVParameter_powerInfo(dn_whmt_getNVParameter_powerInfo_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3470,7 +3577,7 @@ dn_err_t dn_whmt_getNVParameter_ttl(dn_whmt_getNVParameter_ttl_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3565,7 +3672,7 @@ dn_err_t dn_whmt_getNVParameter_HARTantennaGain(dn_whmt_getNVParameter_HARTanten
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3659,7 +3766,7 @@ dn_err_t dn_whmt_getNVParameter_OTAPlockout(dn_whmt_getNVParameter_OTAPlockout_r
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3755,7 +3862,7 @@ dn_err_t dn_whmt_getNVParameter_hrCounterMode(dn_whmt_getNVParameter_hrCounterMo
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3796,6 +3903,103 @@ void dn_whmt_getNVParameter_hrCounterMode_reply(uint8_t cmdId, uint8_t rc, uint8
    if (rc==DN_SERIAL_RC_OK) {
       
       reply->hrCounterMode = payload[DN_GETNVPARAMETER_HRCOUNTERMODE_REPLY_OFFS_HRCOUNTERMODE];
+   }
+   
+   // call the callback
+   dn_whmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_whmt_vars.busyTx=FALSE;
+}
+
+//===== getNVParameter_autojoin
+
+/**
+The getNVParameter<autojoin> command returns the autojoin status stored in 
+mote's persistent storage (i.e. set with setNVParameter<autojoin>). Autojoin 
+can be used to cause a mote in slave mode to join on its own when booted. 
+*/
+dn_err_t dn_whmt_getNVParameter_autojoin(uint32_t reserved, uint8_t nvParamId, dn_whmt_getNVParameter_autojoin_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_whmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_whmt_vars.cmdId          = CMDID_GETNVPARAMETER;
+   dn_whmt_vars.replyContents  = (uint8_t*)reply;
+   dn_whmt_vars.paramId        = PARAMID_AUTOJOIN;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_whmt_vars.outputBuf[0] = PARAMID_AUTOJOIN;
+   dn_write_uint32_t(&dn_whmt_vars.outputBuf[DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED],reserved);
+   dn_whmt_vars.outputBuf[DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID] = nvParamId;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_GETNVPARAMETER,                                     // cmdId
+      extraFlags,                                               // extraFlags
+      dn_whmt_vars.outputBuf,                                   // payload
+      DN_GETNVPARAMETER_AUTOJOIN_REQ_LEN,                       // length
+      dn_whmt_getNVParameter_autojoin_reply                     // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm now busy transmitting
+      dn_whmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_whmt_getNVParameter_autojoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_whmt_getNVParameter_autojoin_rpt* reply;
+   uint8_t paramId;
+   
+   // verify I'm expecting this answer
+   if (dn_whmt_vars.busyTx==FALSE || dn_whmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify I'm expecting this paramId
+   paramId = payload[0];
+   if (paramId!=dn_whmt_vars.paramId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_GETNVPARAMETER_AUTOJOIN_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_whmt_getNVParameter_autojoin_rpt*)dn_whmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      reply->nvParamId = payload[DN_GETNVPARAMETER_AUTOJOIN_REPLY_OFFS_NVPARAMID];
+      reply->autojoin = payload[DN_GETNVPARAMETER_AUTOJOIN_REPLY_OFFS_AUTOJOIN];
    }
    
    // call the callback
@@ -3855,7 +4059,7 @@ dn_err_t dn_whmt_getNVParameter_compliantMode(dn_whmt_getNVParameter_compliantMo
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -3950,7 +4154,7 @@ dn_err_t dn_whmt_getNVParameter_lock(dn_whmt_getNVParameter_lock_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4071,7 +4275,7 @@ dn_err_t dn_whmt_send(bool tranType, bool tranDir, uint16_t destAddr, uint8_t se
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4090,10 +4294,7 @@ void dn_whmt_send_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_send_rpt*)dn_whmt_vars.replyContents;
@@ -4157,7 +4358,7 @@ dn_err_t dn_whmt_join(dn_whmt_join_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4176,10 +4377,7 @@ void dn_whmt_join_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_join_rpt*)dn_whmt_vars.replyContents;
@@ -4251,7 +4449,7 @@ dn_err_t dn_whmt_disconnect(dn_whmt_disconnect_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4270,10 +4468,7 @@ void dn_whmt_disconnect_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_disconnect_rpt*)dn_whmt_vars.replyContents;
@@ -4335,7 +4530,7 @@ dn_err_t dn_whmt_reset(dn_whmt_reset_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4354,10 +4549,7 @@ void dn_whmt_reset_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t le
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_reset_rpt*)dn_whmt_vars.replyContents;
@@ -4430,7 +4622,7 @@ dn_err_t dn_whmt_lowPowerSleep(dn_whmt_lowPowerSleep_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4449,10 +4641,7 @@ void dn_whmt_lowPowerSleep_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_lowPowerSleep_rpt*)dn_whmt_vars.replyContents;
@@ -4521,7 +4710,7 @@ dn_err_t dn_whmt_hartPayload(uint8_t payloadLen, uint8_t* payload, dn_whmt_hartP
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4624,7 +4813,7 @@ dn_err_t dn_whmt_testRadioTx(uint8_t channel, uint16_t numPackets, dn_whmt_testR
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4643,10 +4832,7 @@ void dn_whmt_testRadioTx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_testRadioTx_rpt*)dn_whmt_vars.replyContents;
@@ -4720,7 +4906,7 @@ dn_err_t dn_whmt_testRadioRx(uint8_t channel, uint16_t time, dn_whmt_testRadioRx
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4739,10 +4925,7 @@ void dn_whmt_testRadioRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_testRadioRx_rpt*)dn_whmt_vars.replyContents;
@@ -4806,7 +4989,7 @@ dn_err_t dn_whmt_clearNV(dn_whmt_clearNV_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4825,10 +5008,7 @@ void dn_whmt_clearNV_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_clearNV_rpt*)dn_whmt_vars.replyContents;
@@ -4893,7 +5073,7 @@ dn_err_t dn_whmt_search(dn_whmt_search_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -4912,10 +5092,7 @@ void dn_whmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_search_rpt*)dn_whmt_vars.replyContents;
@@ -5037,7 +5214,7 @@ dn_err_t dn_whmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5056,10 +5233,7 @@ void dn_whmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_testRadioTxExt_rpt*)dn_whmt_vars.replyContents;
@@ -5089,9 +5263,10 @@ During the test, the mote keeps statistics about the number of packets received
 getParameter<testRadioRxStats> command.The mote must be reset (either hardware 
 or software reset) after radio tests are complete and prior to joining.
 
-The station ID is a user selectable value. It must be set to match the station 
-ID used by the transmitter. Station ID is used to isolate traffic if multiple 
-tests are running in the same radio space.
+Station ID is available in IP mote >= 1.4, and WirelessHART mote >= 1.1.2. The 
+station ID is a user selectable value used to isolate traffic if multiple tests 
+are running in the same radio space. It must be set to match the station ID 
+used by the transmitter.
 
 
 
@@ -5135,7 +5310,7 @@ dn_err_t dn_whmt_testRadioRxExt(uint16_t channelMask, uint16_t time, uint8_t sta
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5154,10 +5329,7 @@ void dn_whmt_testRadioRxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_testRadioRxExt_rpt*)dn_whmt_vars.replyContents;
@@ -5223,7 +5395,7 @@ dn_err_t dn_whmt_zeroize(dn_whmt_zeroize_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5242,10 +5414,7 @@ void dn_whmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_whmt_zeroize_rpt*)dn_whmt_vars.replyContents;
@@ -5311,7 +5480,7 @@ dn_err_t dn_whmt_fileWrite(int32_t descriptor, uint16_t offset, uint8_t length, 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5399,7 +5568,7 @@ dn_err_t dn_whmt_fileRead(int32_t descriptor, uint16_t offset, uint8_t length, d
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5490,7 +5659,7 @@ dn_err_t dn_whmt_fileOpen(uint8_t* name, uint8_t options, uint16_t size, uint8_t
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_whmt_vars.busyTx         = TRUE;
    }
    
@@ -5641,7 +5810,7 @@ void dn_whmt_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uin
          // parse the notification
          dn_read_uint16_t(&notif_dataReceived->srcAddr,&payload[DN_DATARECEIVED_NOTIF_OFFS_SRCADDR]);
          notif_dataReceived->seqNum = payload[DN_DATARECEIVED_NOTIF_OFFS_SEQNUM];
-         notif_dataReceived->pktLenth = payload[DN_DATARECEIVED_NOTIF_OFFS_PKTLENTH];
+         notif_dataReceived->pktLength = payload[DN_DATARECEIVED_NOTIF_OFFS_PKTLENGTH];
          memcpy(&notif_dataReceived->data[0],&payload[DN_DATARECEIVED_NOTIF_OFFS_DATA],len-DN_DATARECEIVED_NOTIF_OFFS_DATA);
          break;
       case CMDID_ADVRECEIVED:

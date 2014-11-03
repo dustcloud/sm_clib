@@ -74,6 +74,7 @@ void dn_ipmt_sendTo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
 void dn_ipmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_ipmt_socketInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 
 // serial RX
 void dn_ipmt_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uint8_t len);
@@ -159,7 +160,7 @@ dn_err_t dn_ipmt_setParameter_macAddress(uint8_t* macAddress, dn_ipmt_setParamet
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -255,7 +256,7 @@ dn_err_t dn_ipmt_setParameter_joinKey(uint8_t* joinKey, dn_ipmt_setParameter_joi
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -354,7 +355,7 @@ dn_err_t dn_ipmt_setParameter_networkId(uint16_t networkId, dn_ipmt_setParameter
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -452,7 +453,7 @@ dn_err_t dn_ipmt_setParameter_txPower(int8_t txPower, dn_ipmt_setParameter_txPow
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -509,7 +510,8 @@ the ratio of active listen time to doze time (a low-power radio state) during
 the period when the mote is searching for the network. If you desire a faster 
 join time at the risk of higher power consumption, use the 
 setParameter<joinDutyCycle> command to increase the join duty cycle up to 100%. 
-This setting is persistent and requires a reset to take effect. 
+This setting is persistent and takes effect immediately if the device is 
+searching for network. 
 */
 dn_err_t dn_ipmt_setParameter_joinDutyCycle(uint8_t dutyCycle, dn_ipmt_setParameter_joinDutyCycle_rpt* reply) {
    uint8_t    extraFlags;
@@ -549,7 +551,7 @@ dn_err_t dn_ipmt_setParameter_joinDutyCycle(uint8_t dutyCycle, dn_ipmt_setParame
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -647,7 +649,7 @@ dn_err_t dn_ipmt_setParameter_eventMask(uint32_t eventMask, dn_ipmt_setParameter
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -741,7 +743,7 @@ dn_err_t dn_ipmt_setParameter_OTAPLockout(bool mode, dn_ipmt_setParameter_OTAPLo
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -835,7 +837,7 @@ dn_err_t dn_ipmt_setParameter_routingMode(bool mode, dn_ipmt_setParameter_routin
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -938,7 +940,7 @@ dn_err_t dn_ipmt_setParameter_powerSrcInfo(uint16_t maxStCurrent, uint8_t minLif
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1037,7 +1039,7 @@ dn_err_t dn_ipmt_setParameter_autoJoin(bool mode, dn_ipmt_setParameter_autoJoin_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1130,7 +1132,7 @@ dn_err_t dn_ipmt_getParameter_macAddress(dn_ipmt_getParameter_macAddress_rpt* re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1222,7 +1224,7 @@ dn_err_t dn_ipmt_getParameter_networkId(dn_ipmt_getParameter_networkId_rpt* repl
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1314,7 +1316,7 @@ dn_err_t dn_ipmt_getParameter_txPower(dn_ipmt_getParameter_txPower_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1406,7 +1408,7 @@ dn_err_t dn_ipmt_getParameter_joinDutyCycle(dn_ipmt_getParameter_joinDutyCycle_r
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1499,7 +1501,7 @@ dn_err_t dn_ipmt_getParameter_eventMask(dn_ipmt_getParameter_eventMask_rpt* repl
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1592,7 +1594,7 @@ dn_err_t dn_ipmt_getParameter_moteInfo(dn_ipmt_getParameter_moteInfo_rpt* reply)
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1693,7 +1695,7 @@ dn_err_t dn_ipmt_getParameter_netInfo(dn_ipmt_getParameter_netInfo_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1789,7 +1791,7 @@ dn_err_t dn_ipmt_getParameter_moteStatus(dn_ipmt_getParameter_moteStatus_rpt* re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1889,7 +1891,7 @@ dn_err_t dn_ipmt_getParameter_time(dn_ipmt_getParameter_time_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -1986,7 +1988,7 @@ dn_err_t dn_ipmt_getParameter_charge(dn_ipmt_getParameter_charge_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2083,7 +2085,7 @@ dn_err_t dn_ipmt_getParameter_testRadioRxStats(dn_ipmt_getParameter_testRadioRxS
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2177,7 +2179,7 @@ dn_err_t dn_ipmt_getParameter_OTAPLockout(dn_ipmt_getParameter_OTAPLockout_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2270,7 +2272,7 @@ dn_err_t dn_ipmt_getParameter_moteId(dn_ipmt_getParameter_moteId_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2363,7 +2365,7 @@ dn_err_t dn_ipmt_getParameter_ipv6Address(dn_ipmt_getParameter_ipv6Address_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2456,7 +2458,7 @@ dn_err_t dn_ipmt_getParameter_routingMode(dn_ipmt_getParameter_routingMode_rpt* 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2548,7 +2550,7 @@ dn_err_t dn_ipmt_getParameter_powerSrcInfo(dn_ipmt_getParameter_powerSrcInfo_rpt
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2651,7 +2653,7 @@ dn_err_t dn_ipmt_getParameter_autoJoin(dn_ipmt_getParameter_autoJoin_rpt* reply)
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2744,7 +2746,7 @@ dn_err_t dn_ipmt_join(dn_ipmt_join_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2763,10 +2765,7 @@ void dn_ipmt_join_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_join_rpt*)dn_ipmt_vars.replyContents;
@@ -2830,7 +2829,7 @@ dn_err_t dn_ipmt_disconnect(dn_ipmt_disconnect_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2849,10 +2848,7 @@ void dn_ipmt_disconnect_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_disconnect_rpt*)dn_ipmt_vars.replyContents;
@@ -2915,7 +2911,7 @@ dn_err_t dn_ipmt_reset(dn_ipmt_reset_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -2934,10 +2930,7 @@ void dn_ipmt_reset_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t le
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_reset_rpt*)dn_ipmt_vars.replyContents;
@@ -3003,7 +2996,7 @@ dn_err_t dn_ipmt_lowPowerSleep(dn_ipmt_lowPowerSleep_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3022,10 +3015,7 @@ void dn_ipmt_lowPowerSleep_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, ui
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_lowPowerSleep_rpt*)dn_ipmt_vars.replyContents;
@@ -3056,9 +3046,10 @@ getParameter<testRadioRxStats> command. The testRadioRx command may only be
 issued in Idle mode. The mote must be reset (either hardware or software reset) 
 after radio tests are complete and prior to joining.
 
-The station ID is a user selectable value. It must be set to match the station 
-ID used by the transmitter. Station ID is used to isolate traffic if multiple 
-tests are running in the same radio space.
+Station ID is available in IP mote >= 1.4, and WirelessHART mote >= 1.1.2. The 
+station ID is a user selectable value used to isolate traffic if multiple tests 
+are running in the same radio space. It must be set to match the station ID 
+used by the transmitter.
 
 
 
@@ -3102,7 +3093,7 @@ dn_err_t dn_ipmt_testRadioRx(uint16_t channelMask, uint16_t time, uint8_t statio
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3121,10 +3112,7 @@ void dn_ipmt_testRadioRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_testRadioRx_rpt*)dn_ipmt_vars.replyContents;
@@ -3187,7 +3175,7 @@ dn_err_t dn_ipmt_clearNV(dn_ipmt_clearNV_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3206,10 +3194,7 @@ void dn_ipmt_clearNV_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_clearNV_rpt*)dn_ipmt_vars.replyContents;
@@ -3278,7 +3263,7 @@ dn_err_t dn_ipmt_requestService(uint16_t destAddr, uint8_t serviceType, uint32_t
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3297,10 +3282,7 @@ void dn_ipmt_requestService_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_requestService_rpt*)dn_ipmt_vars.replyContents;
@@ -3363,7 +3345,7 @@ dn_err_t dn_ipmt_getServiceInfo(uint16_t destAddr, uint8_t type, dn_ipmt_getServ
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3451,7 +3433,7 @@ dn_err_t dn_ipmt_openSocket(uint8_t protocol, dn_ipmt_openSocket_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3535,7 +3517,7 @@ dn_err_t dn_ipmt_closeSocket(uint8_t socketId, dn_ipmt_closeSocket_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3554,10 +3536,7 @@ void dn_ipmt_closeSocket_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_closeSocket_rpt*)dn_ipmt_vars.replyContents;
@@ -3621,7 +3600,7 @@ dn_err_t dn_ipmt_bindSocket(uint8_t socketId, uint16_t port, dn_ipmt_bindSocket_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3640,10 +3619,7 @@ void dn_ipmt_bindSocket_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_bindSocket_rpt*)dn_ipmt_vars.replyContents;
@@ -3717,7 +3693,7 @@ dn_err_t dn_ipmt_sendTo(uint8_t socketId, uint8_t* destIP, uint16_t destPort, ui
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3736,10 +3712,7 @@ void dn_ipmt_sendTo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_sendTo_rpt*)dn_ipmt_vars.replyContents;
@@ -3803,7 +3776,7 @@ dn_err_t dn_ipmt_search(dn_ipmt_search_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3822,10 +3795,7 @@ void dn_ipmt_search_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_search_rpt*)dn_ipmt_vars.replyContents;
@@ -3947,7 +3917,7 @@ dn_err_t dn_ipmt_testRadioTxExt(uint8_t testType, uint16_t chanMask, uint16_t re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -3966,10 +3936,7 @@ void dn_ipmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_testRadioTxExt_rpt*)dn_ipmt_vars.replyContents;
@@ -4035,7 +4002,7 @@ dn_err_t dn_ipmt_zeroize(dn_ipmt_zeroize_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmt_vars.busyTx         = TRUE;
    }
    
@@ -4054,10 +4021,7 @@ void dn_ipmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmt_zeroize_rpt*)dn_ipmt_vars.replyContents;
@@ -4068,6 +4032,94 @@ void dn_ipmt_zeroize_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
    // parse returned value (iff RC==0)
    if (rc==DN_SERIAL_RC_OK) {
       
+   }
+   
+   // call the callback
+   dn_ipmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_ipmt_vars.busyTx=FALSE;
+}
+
+//===== socketInfo
+
+/**
+Retrieve information about a socket. (Available in IP Mote >= 1.4.0) 
+*/
+dn_err_t dn_ipmt_socketInfo(uint8_t index, dn_ipmt_socketInfo_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_ipmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_ipmt_vars.cmdId          = CMDID_SOCKETINFO;
+   dn_ipmt_vars.replyContents  = (uint8_t*)reply;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_ipmt_vars.outputBuf[DN_SOCKETINFO_REQ_OFFS_INDEX] = index;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_SOCKETINFO,                                         // cmdId
+      extraFlags,                                               // extraFlags
+      dn_ipmt_vars.outputBuf,                                   // payload
+      DN_SOCKETINFO_REQ_LEN,                                    // length
+      dn_ipmt_socketInfo_reply                                  // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm now busy transmitting
+      dn_ipmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_ipmt_socketInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_ipmt_socketInfo_rpt* reply;
+   
+   // verify I'm expecting this answer
+   if (dn_ipmt_vars.busyTx==FALSE || dn_ipmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_SOCKETINFO_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_ipmt_socketInfo_rpt*)dn_ipmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      reply->index = payload[DN_SOCKETINFO_REPLY_OFFS_INDEX];
+      reply->socketId = payload[DN_SOCKETINFO_REPLY_OFFS_SOCKETID];
+      reply->protocol = payload[DN_SOCKETINFO_REPLY_OFFS_PROTOCOL];
+      reply->bindState = payload[DN_SOCKETINFO_REPLY_OFFS_BINDSTATE];
+      dn_read_uint16_t(&reply->port,&payload[DN_SOCKETINFO_REPLY_OFFS_PORT]);
    }
    
    // call the callback
@@ -4150,6 +4202,7 @@ void dn_ipmt_rxSerialRequest(uint8_t cmdId, uint8_t flags, uint8_t* payload, uin
          notif_receive->socketId = payload[DN_RECEIVE_NOTIF_OFFS_SOCKETID];
          memcpy(&notif_receive->srcAddr[0],&payload[DN_RECEIVE_NOTIF_OFFS_SRCADDR],16);
          dn_read_uint16_t(&notif_receive->srcPort,&payload[DN_RECEIVE_NOTIF_OFFS_SRCPORT]);
+         notif_receive->payloadLen = len-DN_RECEIVE_NOTIF_OFFS_PAYLOAD;
          memcpy(&notif_receive->payload[0],&payload[DN_RECEIVE_NOTIF_OFFS_PAYLOAD],len-DN_RECEIVE_NOTIF_OFFS_PAYLOAD);
          break;
       case CMDID_MACRX:

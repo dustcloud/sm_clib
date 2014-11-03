@@ -170,7 +170,7 @@ dn_err_t dn_ipmg_reset(uint8_t type, uint8_t* macAddress, dn_ipmg_reset_rpt* rep
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -273,7 +273,7 @@ dn_err_t dn_ipmg_subscribe(uint32_t filter, uint32_t unackFilter, dn_ipmg_subscr
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -292,10 +292,7 @@ void dn_ipmg_subscribe_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_subscribe_rpt*)dn_ipmg_vars.replyContents;
@@ -359,7 +356,7 @@ dn_err_t dn_ipmg_getTime(dn_ipmg_getTime_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -410,12 +407,11 @@ void dn_ipmg_getTime_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
 
 /**
 The setNetworkConfig command changes network configuration parameters. The 
-response code indicates whether the changes were successfully applied.This 
+response code indicates whether the changes were successfully applied. This 
 change is persistent.
 
 Generally, changes to network configuration will take effect when the manager 
 reboots. Exceptions are detailed below:
-
 
 - Max Motes: The new maxMotes value is used as soon as new motes try to join 
 the network, but motes are not removed from the network if the value is set to 
@@ -474,7 +470,7 @@ dn_err_t dn_ipmg_setNetworkConfig(uint16_t networkId, int8_t apTxPower, uint8_t 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -493,10 +489,7 @@ void dn_ipmg_setNetworkConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload,
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setNetworkConfig_rpt*)dn_ipmg_vars.replyContents;
@@ -557,7 +550,7 @@ dn_err_t dn_ipmg_clearStatistics(dn_ipmg_clearStatistics_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -576,10 +569,7 @@ void dn_ipmg_clearStatistics_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_clearStatistics_rpt*)dn_ipmg_vars.replyContents;
@@ -645,7 +635,7 @@ dn_err_t dn_ipmg_exchangeMoteJoinKey(uint8_t* macAddress, uint8_t* key, dn_ipmg_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -732,7 +722,7 @@ dn_err_t dn_ipmg_exchangeNetworkId(uint16_t id, dn_ipmg_exchangeNetworkId_rpt* r
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -873,7 +863,7 @@ dn_err_t dn_ipmg_radiotestTx(uint8_t testType, uint16_t chanMask, uint16_t repea
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -892,10 +882,7 @@ void dn_ipmg_radiotestTx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_radiotestTx_rpt*)dn_ipmg_vars.replyContents;
@@ -971,7 +958,7 @@ dn_err_t dn_ipmg_radiotestRx(uint16_t mask, uint16_t duration, uint8_t stationId
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -990,10 +977,7 @@ void dn_ipmg_radiotestRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_radiotestRx_rpt*)dn_ipmg_vars.replyContents;
@@ -1055,7 +1039,7 @@ dn_err_t dn_ipmg_getRadiotestStatistics(dn_ipmg_getRadiotestStatistics_rpt* repl
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1142,7 +1126,7 @@ dn_err_t dn_ipmg_setACLEntry(uint8_t* macAddress, uint8_t* joinKey, dn_ipmg_setA
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1161,10 +1145,7 @@ void dn_ipmg_setACLEntry_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setACLEntry_rpt*)dn_ipmg_vars.replyContents;
@@ -1230,7 +1211,7 @@ dn_err_t dn_ipmg_getNextACLEntry(uint8_t* macAddress, dn_ipmg_getNextACLEntry_rp
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1317,7 +1298,7 @@ dn_err_t dn_ipmg_deleteACLEntry(uint8_t* macAddress, dn_ipmg_deleteACLEntry_rpt*
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1336,10 +1317,7 @@ void dn_ipmg_deleteACLEntry_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_deleteACLEntry_rpt*)dn_ipmg_vars.replyContents;
@@ -1405,7 +1383,7 @@ dn_err_t dn_ipmg_pingMote(uint8_t* macAddress, dn_ipmg_pingMote_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1490,7 +1468,7 @@ dn_err_t dn_ipmg_getLog(uint8_t* macAddress, dn_ipmg_getLog_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1509,10 +1487,7 @@ void dn_ipmg_getLog_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t l
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_getLog_rpt*)dn_ipmg_vars.replyContents;
@@ -1589,7 +1564,7 @@ dn_err_t dn_ipmg_sendData(uint8_t* macAddress, uint8_t priority, uint16_t srcPor
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1675,7 +1650,7 @@ dn_err_t dn_ipmg_startNetwork(dn_ipmg_startNetwork_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1694,10 +1669,7 @@ void dn_ipmg_startNetwork_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uin
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_startNetwork_rpt*)dn_ipmg_vars.replyContents;
@@ -1758,7 +1730,7 @@ dn_err_t dn_ipmg_getSystemInfo(dn_ipmg_getSystemInfo_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1858,7 +1830,7 @@ dn_err_t dn_ipmg_getMoteConfig(uint8_t* macAddress, bool next, dn_ipmg_getMoteCo
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -1948,7 +1920,7 @@ dn_err_t dn_ipmg_getPathInfo(uint8_t* source, uint8_t* dest, dn_ipmg_getPathInfo
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2044,7 +2016,7 @@ dn_err_t dn_ipmg_getNextPathInfo(uint8_t* macAddress, uint8_t filter, uint16_t p
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2137,7 +2109,7 @@ dn_err_t dn_ipmg_setAdvertising(uint8_t activate, dn_ipmg_setAdvertising_rpt* re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2227,7 +2199,7 @@ dn_err_t dn_ipmg_setDownstreamFrameMode(uint8_t frameMode, dn_ipmg_setDownstream
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2312,7 +2284,7 @@ dn_err_t dn_ipmg_getManagerStatistics(dn_ipmg_getManagerStatistics_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2414,7 +2386,7 @@ dn_err_t dn_ipmg_setTime(uint8_t trigger, uint8_t* utcSecs, uint32_t utcUsecs, d
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2433,10 +2405,7 @@ void dn_ipmg_setTime_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t 
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setTime_rpt*)dn_ipmg_vars.replyContents;
@@ -2496,7 +2465,7 @@ dn_err_t dn_ipmg_getLicense(dn_ipmg_getLicense_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2583,7 +2552,7 @@ dn_err_t dn_ipmg_setLicense(uint8_t* license, dn_ipmg_setLicense_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2602,10 +2571,7 @@ void dn_ipmg_setLicense_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setLicense_rpt*)dn_ipmg_vars.replyContents;
@@ -2628,8 +2594,8 @@ void dn_ipmg_setLicense_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
 //===== setCLIUser
 
 /**
-The setUser command sets the password that must be used to log into the command 
-line for a particular user role. The user roles are:
+The setCLIUser command sets the password that must be used to log into the 
+command line for a particular user role. The user roles are:
 
 - Viewer - read-only access to non-sensitive information
 - User - read-write access This change is persistent. 
@@ -2671,7 +2637,7 @@ dn_err_t dn_ipmg_setCLIUser(uint8_t role, uint8_t* password, dn_ipmg_setCLIUser_
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2690,10 +2656,7 @@ void dn_ipmg_setCLIUser_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setCLIUser_rpt*)dn_ipmg_vars.replyContents;
@@ -2769,7 +2732,7 @@ dn_err_t dn_ipmg_sendIP(uint8_t* macAddress, uint8_t priority, uint8_t options, 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2854,7 +2817,7 @@ dn_err_t dn_ipmg_restoreFactoryDefaults(dn_ipmg_restoreFactoryDefaults_rpt* repl
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -2873,10 +2836,7 @@ void dn_ipmg_restoreFactoryDefaults_reply(uint8_t cmdId, uint8_t rc, uint8_t* pa
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_restoreFactoryDefaults_rpt*)dn_ipmg_vars.replyContents;
@@ -2937,7 +2897,7 @@ dn_err_t dn_ipmg_getMoteInfo(uint8_t* macAddress, dn_ipmg_getMoteInfo_rpt* reply
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3030,7 +2990,7 @@ dn_err_t dn_ipmg_getNetworkConfig(dn_ipmg_getNetworkConfig_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3128,7 +3088,7 @@ dn_err_t dn_ipmg_getNetworkInfo(dn_ipmg_getNetworkInfo_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3223,7 +3183,7 @@ dn_err_t dn_ipmg_getMoteConfigById(uint16_t moteId, dn_ipmg_getMoteConfigById_rp
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3313,7 +3273,7 @@ dn_err_t dn_ipmg_setCommonJoinKey(uint8_t* key, dn_ipmg_setCommonJoinKey_rpt* re
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3332,10 +3292,7 @@ void dn_ipmg_setCommonJoinKey_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload,
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setCommonJoinKey_rpt*)dn_ipmg_vars.replyContents;
@@ -3396,7 +3353,7 @@ dn_err_t dn_ipmg_getIPConfig(dn_ipmg_getIPConfig_rpt* reply) {
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3485,7 +3442,7 @@ dn_err_t dn_ipmg_setIPConfig(uint8_t* ipv6Address, uint8_t* mask, dn_ipmg_setIPC
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3504,10 +3461,7 @@ void dn_ipmg_setIPConfig_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_setIPConfig_rpt*)dn_ipmg_vars.replyContents;
@@ -3569,7 +3523,7 @@ dn_err_t dn_ipmg_deleteMote(uint8_t* macAddress, dn_ipmg_deleteMote_rpt* reply) 
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    
@@ -3588,10 +3542,7 @@ void dn_ipmg_deleteMote_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8
       return;
    }
    
-   // verify length
-   if (rc==DN_SERIAL_RC_OK) {
-      return;
-   }
+   // do NOT verify length (no return fields expected)
    
    // cast the replyContent
    reply = (dn_ipmg_deleteMote_rpt*)dn_ipmg_vars.replyContents;
@@ -3658,7 +3609,7 @@ dn_err_t dn_ipmg_getMoteLinks(uint8_t* macAddress, uint16_t idx, dn_ipmg_getMote
    );
    
    if (rc==DN_ERR_NONE) {
-      // I'm not busy transmitting
+      // I'm now busy transmitting
       dn_ipmg_vars.busyTx         = TRUE;
    }
    

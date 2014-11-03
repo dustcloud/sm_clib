@@ -81,6 +81,7 @@ C library to connect to a SmartMesh WirelessHART Mote.
 #define PARAMID_HARTANTENNAGAIN        0x14
 #define PARAMID_OTAPLOCKOUT            0x15
 #define PARAMID_HRCOUNTERMODE          0x17
+#define PARAMID_AUTOJOIN               0x18
 #define PARAMID_COMPLIANTMODE          0x19
 #define PARAMID_LOCK                   0x1a
 
@@ -196,6 +197,12 @@ C library to connect to a SmartMesh WirelessHART Mote.
 #define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_OFFS_HRCOUNTERMODE       1
 #define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      2
 
+// setNVParameter_autojoin
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 1
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                5
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_AUTOJOIN                 6
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_LEN                           7
+
 // setNVParameter_compliantMode
 #define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_OFFS_COMPLIANTMODE       1
 #define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      2
@@ -228,6 +235,11 @@ C library to connect to a SmartMesh WirelessHART Mote.
 
 // getNVParameter_hrCounterMode
 #define DN_GETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      1
+
+// getNVParameter_autojoin
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 1
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                5
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_LEN                           6
 
 // getNVParameter_compliantMode
 #define DN_GETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      1
@@ -456,6 +468,10 @@ C library to connect to a SmartMesh WirelessHART Mote.
 // setNVParameter_hrCounterMode
 #define DN_SETNVPARAMETER_HRCOUNTERMODE_REPLY_LEN                    1
 
+// setNVParameter_autojoin
+#define DN_SETNVPARAMETER_AUTOJOIN_REPLY_OFFS_NVPARAMID              1
+#define DN_SETNVPARAMETER_AUTOJOIN_REPLY_LEN                         2
+
 // setNVParameter_compliantMode
 #define DN_SETNVPARAMETER_COMPLIANTMODE_REPLY_LEN                    1
 
@@ -496,6 +512,11 @@ C library to connect to a SmartMesh WirelessHART Mote.
 // getNVParameter_hrCounterMode
 #define DN_GETNVPARAMETER_HRCOUNTERMODE_REPLY_OFFS_HRCOUNTERMODE     1
 #define DN_GETNVPARAMETER_HRCOUNTERMODE_REPLY_LEN                    2
+
+// getNVParameter_autojoin
+#define DN_GETNVPARAMETER_AUTOJOIN_REPLY_OFFS_NVPARAMID              1
+#define DN_GETNVPARAMETER_AUTOJOIN_REPLY_OFFS_AUTOJOIN               2
+#define DN_GETNVPARAMETER_AUTOJOIN_REPLY_LEN                         3
 
 // getNVParameter_compliantMode
 #define DN_GETNVPARAMETER_COMPLIANTMODE_REPLY_OFFS_COMPLIANTMODE     1
@@ -591,7 +612,7 @@ C library to connect to a SmartMesh WirelessHART Mote.
 // dataReceived
 #define DN_DATARECEIVED_NOTIF_OFFS_SRCADDR                           0
 #define DN_DATARECEIVED_NOTIF_OFFS_SEQNUM                            2
-#define DN_DATARECEIVED_NOTIF_OFFS_PKTLENTH                          3
+#define DN_DATARECEIVED_NOTIF_OFFS_PKTLENGTH                         3
 #define DN_DATARECEIVED_NOTIF_OFFS_DATA                              4
 #define DN_DATARECEIVED_NOTIF_LEN                                    4
 
@@ -756,6 +777,11 @@ typedef struct {
 
 typedef struct {
    uint8_t    RC;
+   uint8_t    nvParamId;
+} dn_whmt_setNVParameter_autojoin_rpt;
+
+typedef struct {
+   uint8_t    RC;
 } dn_whmt_setNVParameter_compliantMode_rpt;
 
 typedef struct {
@@ -804,6 +830,12 @@ typedef struct {
    uint8_t    RC;
    uint8_t    hrCounterMode;
 } dn_whmt_getNVParameter_hrCounterMode_rpt;
+
+typedef struct {
+   uint8_t    RC;
+   uint8_t    nvParamId;
+   uint8_t    autojoin;
+} dn_whmt_getNVParameter_autojoin_rpt;
 
 typedef struct {
    uint8_t    RC;
@@ -919,7 +951,7 @@ typedef struct {
    uint8_t    tranDir;
    uint16_t   srcAddr;
    uint8_t    seqNum;
-   uint8_t    pktLenth;
+   uint8_t    pktLength;
    uint8_t    data[MAX_FRAME_LENGTH];
 } dn_whmt_dataReceived_nt;
 
@@ -980,6 +1012,7 @@ dn_err_t dn_whmt_setNVParameter_ttl(uint8_t memory, uint8_t timeToLive, dn_whmt_
 dn_err_t dn_whmt_setNVParameter_HARTantennaGain(uint8_t memory, int8_t antennaGain, dn_whmt_setNVParameter_HARTantennaGain_rpt* reply);
 dn_err_t dn_whmt_setNVParameter_OTAPlockout(uint8_t memory, uint8_t otapLockout, dn_whmt_setNVParameter_OTAPlockout_rpt* reply);
 dn_err_t dn_whmt_setNVParameter_hrCounterMode(uint8_t memory, uint8_t hrCounterMode, dn_whmt_setNVParameter_hrCounterMode_rpt* reply);
+dn_err_t dn_whmt_setNVParameter_autojoin(uint8_t memory, uint32_t reserved, uint8_t nvParamId, uint8_t autojoin, dn_whmt_setNVParameter_autojoin_rpt* reply);
 dn_err_t dn_whmt_setNVParameter_compliantMode(uint8_t memory, uint8_t compliantMode, dn_whmt_setNVParameter_compliantMode_rpt* reply);
 dn_err_t dn_whmt_setNVParameter_lock(uint8_t memory, uint8_t code, uint16_t master, dn_whmt_setNVParameter_lock_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_macAddress(dn_whmt_getNVParameter_macAddress_rpt* reply);
@@ -990,6 +1023,7 @@ dn_err_t dn_whmt_getNVParameter_ttl(dn_whmt_getNVParameter_ttl_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_HARTantennaGain(dn_whmt_getNVParameter_HARTantennaGain_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_OTAPlockout(dn_whmt_getNVParameter_OTAPlockout_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_hrCounterMode(dn_whmt_getNVParameter_hrCounterMode_rpt* reply);
+dn_err_t dn_whmt_getNVParameter_autojoin(uint32_t reserved, uint8_t nvParamId, dn_whmt_getNVParameter_autojoin_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_compliantMode(dn_whmt_getNVParameter_compliantMode_rpt* reply);
 dn_err_t dn_whmt_getNVParameter_lock(dn_whmt_getNVParameter_lock_rpt* reply);
 dn_err_t dn_whmt_send(bool tranType, bool tranDir, uint16_t destAddr, uint8_t serviceId, uint8_t appDomain, uint8_t priority, uint16_t reserved, uint8_t seqNum, uint8_t payloadLen, uint8_t* payload, dn_whmt_send_rpt* reply);
