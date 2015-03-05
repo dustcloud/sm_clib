@@ -96,6 +96,7 @@ void dn_serial_mt_rxHdlcFrame(uint8_t* rxFrame, uint8_t rxFrameLen) {
    uint8_t flags;
    uint8_t isResponse;
    uint8_t packetId;
+   uint8_t isSync;
    // misc
    uint8_t isRepeatId;
    
@@ -110,6 +111,10 @@ void dn_serial_mt_rxHdlcFrame(uint8_t* rxFrame, uint8_t rxFrameLen) {
    flags      = rxFrame[2];
    isResponse = ((flags & DN_SERIAL_API_MASK_RESPONSE)!=0);
    packetId   = ((flags & DN_SERIAL_API_MASK_PACKETID)!=0);
+   isSync     = ((flags & DN_SERIAL_API_MASK_SYNC)!=0);
+
+   if(isSync)
+	   dn_serial_mt_vars.rxPacketId = DN_SERIAL_PACKETID_NOTSET;
    
    // check if valid packet ID
    if (isResponse) {
