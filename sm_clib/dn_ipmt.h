@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014, Dust Networks. All rights reserved.
+Copyright (c) 2015, Dust Networks. All rights reserved.
 
 C library to connect to a SmartMesh IP Mote.
 

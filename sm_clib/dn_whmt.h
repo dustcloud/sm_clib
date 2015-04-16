@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014, Dust Networks. All rights reserved.
+Copyright (c) 2015, Dust Networks. All rights reserved.
 
 C library to connect to a SmartMesh WirelessHART Mote.
 
@@ -159,93 +159,93 @@ C library to connect to a SmartMesh WirelessHART Mote.
 #define DN_GETPARAMETER_LOCK_REQ_LEN                                 1
 
 // setNVParameter_macAddress
-#define DN_SETNVPARAMETER_MACADDRESS_REQ_OFFS_MACADDR                1
-#define DN_SETNVPARAMETER_MACADDRESS_REQ_LEN                         9
+#define DN_SETNVPARAMETER_MACADDRESS_REQ_OFFS_MACADDR                5
+#define DN_SETNVPARAMETER_MACADDRESS_REQ_LEN                         13
 
 // setNVParameter_joinKey
-#define DN_SETNVPARAMETER_JOINKEY_REQ_OFFS_JOINKEY                   1
-#define DN_SETNVPARAMETER_JOINKEY_REQ_LEN                            17
+#define DN_SETNVPARAMETER_JOINKEY_REQ_OFFS_JOINKEY                   5
+#define DN_SETNVPARAMETER_JOINKEY_REQ_LEN                            21
 
 // setNVParameter_networkId
-#define DN_SETNVPARAMETER_NETWORKID_REQ_OFFS_NETWORKID               1
-#define DN_SETNVPARAMETER_NETWORKID_REQ_LEN                          3
+#define DN_SETNVPARAMETER_NETWORKID_REQ_OFFS_NETWORKID               5
+#define DN_SETNVPARAMETER_NETWORKID_REQ_LEN                          7
 
 // setNVParameter_txPower
-#define DN_SETNVPARAMETER_TXPOWER_REQ_OFFS_TXPOWER                   1
-#define DN_SETNVPARAMETER_TXPOWER_REQ_LEN                            2
+#define DN_SETNVPARAMETER_TXPOWER_REQ_OFFS_TXPOWER                   5
+#define DN_SETNVPARAMETER_TXPOWER_REQ_LEN                            6
 
 // setNVParameter_powerInfo
-#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_POWERSOURCE             1
-#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGECUR            2
-#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGETIME           4
-#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_RECOVERTIME             8
-#define DN_SETNVPARAMETER_POWERINFO_REQ_LEN                          12
+#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_POWERSOURCE             5
+#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGECUR            6
+#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGETIME           8
+#define DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_RECOVERTIME             12
+#define DN_SETNVPARAMETER_POWERINFO_REQ_LEN                          16
 
 // setNVParameter_ttl
-#define DN_SETNVPARAMETER_TTL_REQ_OFFS_TIMETOLIVE                    1
-#define DN_SETNVPARAMETER_TTL_REQ_LEN                                2
+#define DN_SETNVPARAMETER_TTL_REQ_OFFS_TIMETOLIVE                    5
+#define DN_SETNVPARAMETER_TTL_REQ_LEN                                6
 
 // setNVParameter_HARTantennaGain
-#define DN_SETNVPARAMETER_HARTANTENNAGAIN_REQ_OFFS_ANTENNAGAIN       1
-#define DN_SETNVPARAMETER_HARTANTENNAGAIN_REQ_LEN                    2
+#define DN_SETNVPARAMETER_HARTANTENNAGAIN_REQ_OFFS_ANTENNAGAIN       5
+#define DN_SETNVPARAMETER_HARTANTENNAGAIN_REQ_LEN                    6
 
 // setNVParameter_OTAPlockout
-#define DN_SETNVPARAMETER_OTAPLOCKOUT_REQ_OFFS_OTAPLOCKOUT           1
-#define DN_SETNVPARAMETER_OTAPLOCKOUT_REQ_LEN                        2
+#define DN_SETNVPARAMETER_OTAPLOCKOUT_REQ_OFFS_OTAPLOCKOUT           5
+#define DN_SETNVPARAMETER_OTAPLOCKOUT_REQ_LEN                        6
 
 // setNVParameter_hrCounterMode
-#define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_OFFS_HRCOUNTERMODE       1
-#define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      2
+#define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_OFFS_HRCOUNTERMODE       5
+#define DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      6
 
 // setNVParameter_autojoin
-#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 1
-#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                5
-#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_AUTOJOIN                 6
-#define DN_SETNVPARAMETER_AUTOJOIN_REQ_LEN                           7
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 5
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                9
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_AUTOJOIN                 10
+#define DN_SETNVPARAMETER_AUTOJOIN_REQ_LEN                           11
 
 // setNVParameter_compliantMode
-#define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_OFFS_COMPLIANTMODE       1
-#define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      2
+#define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_OFFS_COMPLIANTMODE       5
+#define DN_SETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      6
 
 // setNVParameter_lock
-#define DN_SETNVPARAMETER_LOCK_REQ_OFFS_CODE                         1
-#define DN_SETNVPARAMETER_LOCK_REQ_OFFS_MASTER                       2
-#define DN_SETNVPARAMETER_LOCK_REQ_LEN                               4
+#define DN_SETNVPARAMETER_LOCK_REQ_OFFS_CODE                         5
+#define DN_SETNVPARAMETER_LOCK_REQ_OFFS_MASTER                       6
+#define DN_SETNVPARAMETER_LOCK_REQ_LEN                               8
 
 // getNVParameter_macAddress
-#define DN_GETNVPARAMETER_MACADDRESS_REQ_LEN                         1
+#define DN_GETNVPARAMETER_MACADDRESS_REQ_LEN                         5
 
 // getNVParameter_networkId
-#define DN_GETNVPARAMETER_NETWORKID_REQ_LEN                          1
+#define DN_GETNVPARAMETER_NETWORKID_REQ_LEN                          5
 
 // getNVParameter_txPower
-#define DN_GETNVPARAMETER_TXPOWER_REQ_LEN                            1
+#define DN_GETNVPARAMETER_TXPOWER_REQ_LEN                            5
 
 // getNVParameter_powerInfo
-#define DN_GETNVPARAMETER_POWERINFO_REQ_LEN                          1
+#define DN_GETNVPARAMETER_POWERINFO_REQ_LEN                          5
 
 // getNVParameter_ttl
-#define DN_GETNVPARAMETER_TTL_REQ_LEN                                1
+#define DN_GETNVPARAMETER_TTL_REQ_LEN                                5
 
 // getNVParameter_HARTantennaGain
-#define DN_GETNVPARAMETER_HARTANTENNAGAIN_REQ_LEN                    1
+#define DN_GETNVPARAMETER_HARTANTENNAGAIN_REQ_LEN                    5
 
 // getNVParameter_OTAPlockout
-#define DN_GETNVPARAMETER_OTAPLOCKOUT_REQ_LEN                        1
+#define DN_GETNVPARAMETER_OTAPLOCKOUT_REQ_LEN                        5
 
 // getNVParameter_hrCounterMode
-#define DN_GETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      1
+#define DN_GETNVPARAMETER_HRCOUNTERMODE_REQ_LEN                      5
 
 // getNVParameter_autojoin
-#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 1
-#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                5
-#define DN_GETNVPARAMETER_AUTOJOIN_REQ_LEN                           6
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED                 5
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID                9
+#define DN_GETNVPARAMETER_AUTOJOIN_REQ_LEN                           10
 
 // getNVParameter_compliantMode
-#define DN_GETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      1
+#define DN_GETNVPARAMETER_COMPLIANTMODE_REQ_LEN                      5
 
 // getNVParameter_lock
-#define DN_GETNVPARAMETER_LOCK_REQ_LEN                               1
+#define DN_GETNVPARAMETER_LOCK_REQ_LEN                               5
 
 // send
 #define DN_SEND_REQ_OFFS_DESTADDR                                    0

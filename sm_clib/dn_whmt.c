@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014, Dust Networks. All rights reserved.
+Copyright (c) 2015, Dust Networks. All rights reserved.
 
 C library to connect to a SmartMesh WirelessHART Mote.
 
@@ -1956,7 +1956,11 @@ dn_err_t dn_whmt_setNVParameter_macAddress(uint8_t memory, uint8_t* macAddr, dn_
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_MACADDRESS;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_MACADDRESS;
    memcpy(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_MACADDRESS_REQ_OFFS_MACADDR],macAddr,8);
    
    // send outputBuf
@@ -2055,7 +2059,11 @@ dn_err_t dn_whmt_setNVParameter_joinKey(uint8_t memory, uint8_t* joinKey, dn_whm
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_JOINKEY;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_JOINKEY;
    memcpy(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_JOINKEY_REQ_OFFS_JOINKEY],joinKey,16);
    
    // send outputBuf
@@ -2163,7 +2171,11 @@ dn_err_t dn_whmt_setNVParameter_networkId(uint8_t memory, uint16_t networkId, dn
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_NETWORKID;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_NETWORKID;
    dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_NETWORKID_REQ_OFFS_NETWORKID],networkId);
    
    // send outputBuf
@@ -2266,7 +2278,11 @@ dn_err_t dn_whmt_setNVParameter_txPower(uint8_t memory, int8_t txPower, dn_whmt_
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_TXPOWER;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_TXPOWER;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_TXPOWER_REQ_OFFS_TXPOWER] = (int8_t)txPower;
    
    // send outputBuf
@@ -2364,7 +2380,11 @@ dn_err_t dn_whmt_setNVParameter_powerInfo(uint8_t memory, uint8_t powerSource, u
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_POWERINFO;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_POWERINFO;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_POWERSOURCE] = powerSource;
    dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGECUR],dischargeCur);
    dn_write_uint32_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_POWERINFO_REQ_OFFS_DISCHARGETIME],dischargeTime);
@@ -2473,7 +2493,11 @@ dn_err_t dn_whmt_setNVParameter_ttl(uint8_t memory, uint8_t timeToLive, dn_whmt_
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_TTL;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_TTL;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_TTL_REQ_OFFS_TIMETOLIVE] = timeToLive;
    
    // send outputBuf
@@ -2575,7 +2599,11 @@ dn_err_t dn_whmt_setNVParameter_HARTantennaGain(uint8_t memory, int8_t antennaGa
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_HARTANTENNAGAIN;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_HARTANTENNAGAIN;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_HARTANTENNAGAIN_REQ_OFFS_ANTENNAGAIN] = (int8_t)antennaGain;
    
    // send outputBuf
@@ -2679,7 +2707,11 @@ dn_err_t dn_whmt_setNVParameter_OTAPlockout(uint8_t memory, uint8_t otapLockout,
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_OTAPLOCKOUT;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_OTAPLOCKOUT;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_OTAPLOCKOUT_REQ_OFFS_OTAPLOCKOUT] = otapLockout;
    
    // send outputBuf
@@ -2781,7 +2813,11 @@ dn_err_t dn_whmt_setNVParameter_hrCounterMode(uint8_t memory, uint8_t hrCounterM
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_HRCOUNTERMODE;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_HRCOUNTERMODE;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_HRCOUNTERMODE_REQ_OFFS_HRCOUNTERMODE] = hrCounterMode;
    
    // send outputBuf
@@ -2883,7 +2919,11 @@ dn_err_t dn_whmt_setNVParameter_autojoin(uint8_t memory, uint32_t reserved, uint
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_AUTOJOIN;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_AUTOJOIN;
    dn_write_uint32_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED],reserved);
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID] = nvParamId;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_AUTOJOIN_REQ_OFFS_AUTOJOIN] = autojoin;
@@ -2988,7 +3028,11 @@ dn_err_t dn_whmt_setNVParameter_compliantMode(uint8_t memory, uint8_t compliantM
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_COMPLIANTMODE;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_COMPLIANTMODE;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_COMPLIANTMODE_REQ_OFFS_COMPLIANTMODE] = compliantMode;
    
    // send outputBuf
@@ -3090,7 +3134,11 @@ dn_err_t dn_whmt_setNVParameter_lock(uint8_t memory, uint8_t code, uint16_t mast
    }
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_LOCK;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_LOCK;
    dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_LOCK_REQ_OFFS_CODE] = code;
    dn_write_uint16_t(&dn_whmt_vars.outputBuf[DN_SETNVPARAMETER_LOCK_REQ_OFFS_MASTER],master);
    
@@ -3188,7 +3236,11 @@ dn_err_t dn_whmt_getNVParameter_macAddress(dn_whmt_getNVParameter_macAddress_rpt
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_MACADDRESS;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_MACADDRESS;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3281,7 +3333,11 @@ dn_err_t dn_whmt_getNVParameter_networkId(dn_whmt_getNVParameter_networkId_rpt* 
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_NETWORKID;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_NETWORKID;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3374,7 +3430,11 @@ dn_err_t dn_whmt_getNVParameter_txPower(dn_whmt_getNVParameter_txPower_rpt* repl
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_TXPOWER;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_TXPOWER;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3467,7 +3527,11 @@ dn_err_t dn_whmt_getNVParameter_powerInfo(dn_whmt_getNVParameter_powerInfo_rpt* 
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_POWERINFO;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_POWERINFO;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3565,7 +3629,11 @@ dn_err_t dn_whmt_getNVParameter_ttl(dn_whmt_getNVParameter_ttl_rpt* reply) {
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_TTL;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_TTL;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3660,7 +3728,11 @@ dn_err_t dn_whmt_getNVParameter_HARTantennaGain(dn_whmt_getNVParameter_HARTanten
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_HARTANTENNAGAIN;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_HARTANTENNAGAIN;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3754,7 +3826,11 @@ dn_err_t dn_whmt_getNVParameter_OTAPlockout(dn_whmt_getNVParameter_OTAPlockout_r
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_OTAPLOCKOUT;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_OTAPLOCKOUT;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3850,7 +3926,11 @@ dn_err_t dn_whmt_getNVParameter_hrCounterMode(dn_whmt_getNVParameter_hrCounterMo
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_HRCOUNTERMODE;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_HRCOUNTERMODE;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -3944,7 +4024,11 @@ dn_err_t dn_whmt_getNVParameter_autojoin(uint32_t reserved, uint8_t nvParamId, d
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_AUTOJOIN;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_AUTOJOIN;
    dn_write_uint32_t(&dn_whmt_vars.outputBuf[DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_RESERVED],reserved);
    dn_whmt_vars.outputBuf[DN_GETNVPARAMETER_AUTOJOIN_REQ_OFFS_NVPARAMID] = nvParamId;
    
@@ -4047,7 +4131,11 @@ dn_err_t dn_whmt_getNVParameter_compliantMode(dn_whmt_getNVParameter_compliantMo
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_COMPLIANTMODE;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_COMPLIANTMODE;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
@@ -4142,7 +4230,11 @@ dn_err_t dn_whmt_getNVParameter_lock(dn_whmt_getNVParameter_lock_rpt* reply) {
    extraFlags = 0x00;
    
    // build outputBuf
-   dn_whmt_vars.outputBuf[0] = PARAMID_LOCK;
+   dn_whmt_vars.outputBuf[0] = 0; // reserved
+   dn_whmt_vars.outputBuf[1] = 0; // reserved
+   dn_whmt_vars.outputBuf[2] = 0; // reserved
+   dn_whmt_vars.outputBuf[3] = 0; // reserved
+   dn_whmt_vars.outputBuf[4] = PARAMID_LOCK;
    
    // send outputBuf
    rc = dn_serial_mt_sendRequest(
