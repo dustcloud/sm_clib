@@ -41,6 +41,7 @@ void dn_ipmt_setParameter_eventMask_reply(uint8_t cmdId, uint8_t rc, uint8_t* pa
 void dn_ipmt_setParameter_OTAPLockout_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_setParameter_routingMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_setParameter_powerSrcInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_ipmt_setParameter_advKey_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_setParameter_autoJoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_macAddress_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_networkId_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
@@ -57,6 +58,7 @@ void dn_ipmt_getParameter_OTAPLockout_reply(uint8_t cmdId, uint8_t rc, uint8_t* 
 void dn_ipmt_getParameter_moteId_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_ipv6Address_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_routingMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
+void dn_ipmt_getParameter_appInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_powerSrcInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_getParameter_autoJoin_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
 void dn_ipmt_join_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len);
@@ -973,6 +975,102 @@ void dn_ipmt_setParameter_powerSrcInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t*
    
    // cast the replyContent
    reply = (dn_ipmt_setParameter_powerSrcInfo_rpt*)dn_ipmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+   }
+   
+   // call the callback
+   dn_ipmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_ipmt_vars.busyTx=FALSE;
+}
+
+//===== setParameter_advKey
+
+/**
+Sets the Advertisement MIC key - this key is used to authenticate 
+advertisements, and can be set per vendor/installation to prevent unauthorized 
+devices from being able to respond to advertisements. If changed, it must match 
+that set on the corresponding AP (using mset on the manager CLI) in order for 
+the mote to join. It can be reset to default via the clearNV command. 
+*/
+dn_err_t dn_ipmt_setParameter_advKey(uint8_t* advKey, dn_ipmt_setParameter_advKey_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_ipmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_ipmt_vars.cmdId          = CMDID_SETPARAMETER;
+   dn_ipmt_vars.replyContents  = (uint8_t*)reply;
+   dn_ipmt_vars.paramId        = PARAMID_ADVKEY;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_ipmt_vars.outputBuf[0] = PARAMID_ADVKEY;
+   memcpy(&dn_ipmt_vars.outputBuf[DN_SETPARAMETER_ADVKEY_REQ_OFFS_ADVKEY],advKey,16);
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_SETPARAMETER,                                       // cmdId
+      extraFlags,                                               // extraFlags
+      dn_ipmt_vars.outputBuf,                                   // payload
+      DN_SETPARAMETER_ADVKEY_REQ_LEN,                           // length
+      dn_ipmt_setParameter_advKey_reply                         // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm now busy transmitting
+      dn_ipmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_ipmt_setParameter_advKey_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_ipmt_setParameter_advKey_rpt* reply;
+   uint8_t paramId;
+   
+   // verify I'm expecting this answer
+   if (dn_ipmt_vars.busyTx==FALSE || dn_ipmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify I'm expecting this paramId
+   paramId = payload[0];
+   if (paramId!=dn_ipmt_vars.paramId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_SETPARAMETER_ADVKEY_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_ipmt_setParameter_advKey_rpt*)dn_ipmt_vars.replyContents;
    
    // store RC
    reply->RC = rc;
@@ -2499,6 +2597,100 @@ void dn_ipmt_getParameter_routingMode_reply(uint8_t cmdId, uint8_t rc, uint8_t* 
    if (rc==DN_SERIAL_RC_OK) {
       
       reply->routingMode = payload[DN_GETPARAMETER_ROUTINGMODE_REPLY_OFFS_ROUTINGMODE];
+   }
+   
+   // call the callback
+   dn_ipmt_vars.replyCb(cmdId);
+   
+   // I'm not busy transmitting anymore
+   dn_ipmt_vars.busyTx=FALSE;
+}
+
+//===== getParameter_appInfo
+
+/**
+Get the application (as opposed to the network stack) version information. 
+*/
+dn_err_t dn_ipmt_getParameter_appInfo(dn_ipmt_getParameter_appInfo_rpt* reply) {
+   uint8_t    extraFlags;
+   dn_err_t   rc;
+   
+   // lock the module
+   dn_lock();
+   
+   // verify no ongoing transmissions
+   if (dn_ipmt_vars.busyTx) {
+      // unlock the module
+      dn_unlock();
+      
+      // return
+      return DN_ERR_BUSY;
+   }
+   
+   // store callback information
+   dn_ipmt_vars.cmdId          = CMDID_GETPARAMETER;
+   dn_ipmt_vars.replyContents  = (uint8_t*)reply;
+   dn_ipmt_vars.paramId        = PARAMID_APPINFO;
+   
+   // extraFlags
+   extraFlags = 0x00;
+   
+   // build outputBuf
+   dn_ipmt_vars.outputBuf[0] = PARAMID_APPINFO;
+   
+   // send outputBuf
+   rc = dn_serial_mt_sendRequest(
+      CMDID_GETPARAMETER,                                       // cmdId
+      extraFlags,                                               // extraFlags
+      dn_ipmt_vars.outputBuf,                                   // payload
+      DN_GETPARAMETER_APPINFO_REQ_LEN,                          // length
+      dn_ipmt_getParameter_appInfo_reply                        // replyCb
+   );
+   
+   if (rc==DN_ERR_NONE) {
+      // I'm now busy transmitting
+      dn_ipmt_vars.busyTx         = TRUE;
+   }
+   
+   // unlock the module
+   dn_unlock();
+   
+   return rc;
+   
+}
+
+void dn_ipmt_getParameter_appInfo_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t len) {
+   dn_ipmt_getParameter_appInfo_rpt* reply;
+   uint8_t paramId;
+   
+   // verify I'm expecting this answer
+   if (dn_ipmt_vars.busyTx==FALSE || dn_ipmt_vars.cmdId!=cmdId) {
+      return;
+   }
+   
+   // verify I'm expecting this paramId
+   paramId = payload[0];
+   if (paramId!=dn_ipmt_vars.paramId) {
+      return;
+   }
+   
+   // verify length
+   if (rc==DN_SERIAL_RC_OK && len<DN_GETPARAMETER_APPINFO_REPLY_LEN) {
+      return;
+   }
+   
+   // cast the replyContent
+   reply = (dn_ipmt_getParameter_appInfo_rpt*)dn_ipmt_vars.replyContents;
+   
+   // store RC
+   reply->RC = rc;
+   
+   // parse returned value (iff RC==0)
+   if (rc==DN_SERIAL_RC_OK) {
+      
+      dn_read_uint16_t(&reply->vendorId,&payload[DN_GETPARAMETER_APPINFO_REPLY_OFFS_VENDORID]);
+      reply->appId = payload[DN_GETPARAMETER_APPINFO_REPLY_OFFS_APPID];
+      memcpy(&reply->appVer[0],&payload[DN_GETPARAMETER_APPINFO_REPLY_OFFS_APPVER],5);
    }
    
    // call the callback
