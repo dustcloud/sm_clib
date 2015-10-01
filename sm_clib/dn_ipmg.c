@@ -1613,7 +1613,9 @@ void dn_ipmg_sendData_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint8_t
 The startNetwork command tells the manager to allow the network to start 
 forming (begin accepting join requests from devices). The external application 
 must issue the startNetwork command if the autoStartNetwork flag is not set 
-(see setNetworkConfig). 
+(see setNetworkConfig).
+
+This command has been deprecated and should not be used in new designs. 
 */
 dn_err_t dn_ipmg_startNetwork(dn_ipmg_startNetwork_rpt* reply) {
    uint8_t    extraFlags;
@@ -2340,6 +2342,9 @@ void dn_ipmg_getManagerStatistics_reply(uint8_t cmdId, uint8_t rc, uint8_t* payl
 //===== setTime
 
 /**
+This command has been deprecated, and should not be used in new designs. When 
+the Manager restarts, it will start counting from 20:00:00 UTC July 2, 2002.
+
 The setTime command sets the UTC time on the manager. This command may only be 
 executed when the network is not running. If the trigger flag is false, the 
 manager sets the specified time as soon as it receives the setTime command. 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\MoteBlink\MoteBlink.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\Triangle2Manager\Triangle2Manager.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+

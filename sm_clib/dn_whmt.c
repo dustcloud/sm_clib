@@ -2025,7 +2025,7 @@ void dn_whmt_setNVParameter_macAddress_reply(uint8_t cmdId, uint8_t rc, uint8_t*
 //===== setNVParameter_joinKey
 
 /**
-The setParameter<joinKey> command may be used to set the join key. Upon 
+The setNVParameter<joinKey> command may be used to set the join key. Upon 
 receiving this request, the mote stores the new join key in its persistent 
 storage. Using the write RAM option will only have an effect if the command is 
 called while the mote is in Idle state. Otherwise, the new value will be used 
@@ -2240,15 +2240,15 @@ void dn_whmt_setNVParameter_networkId_reply(uint8_t cmdId, uint8_t rc, uint8_t* 
 //===== setNVParameter_txPower
 
 /**
-The setParameter<txPower> command sets the mote output power. Refer to product 
-datasheets for supported RF output power values. For example, if the mote has a 
-typical RF output power of +8 dBm when the Power Amplifier (PA) is enabled, 
-then set the txPower parameter to 8 to enable the PA. Similarly, if the mote 
-has a typical RF output power of -2 dBm when the PA is disabled, then set the 
-txPower parameter to -2 to turn off the PA. This command may be issued at any 
-time and takes effect at the next mote boot. To change the transmit power 
-immediately, use the write RAM option of this command, which can also be used 
-at any time. 
+The setNVParameter<txPower> command sets the mote output power. Refer to 
+product datasheets for supported RF output power values. For example, if the 
+mote has a typical RF output power of +8 dBm when the Power Amplifier (PA) is 
+enabled, then set the txPower parameter to 8 to enable the PA. Similarly, if 
+the mote has a typical RF output power of -2 dBm when the PA is disabled, then 
+set the txPower parameter to -2 to turn off the PA. This command may be issued 
+at any time and takes effect at the next mote boot. To change the transmit 
+power immediately, use the write RAM option of this command, which can also be 
+used at any time. 
 */
 dn_err_t dn_whmt_setNVParameter_txPower(uint8_t memory, int8_t txPower, dn_whmt_setNVParameter_txPower_rpt* reply) {
    uint8_t    extraFlags;
@@ -2885,11 +2885,10 @@ void dn_whmt_setNVParameter_hrCounterMode_reply(uint8_t cmdId, uint8_t rc, uint8
 The setNVParameter<autojoin> command allows the microprocessor to change 
 between automatic and manual joining by the mote's networking stack. In manual 
 mode, an explicit join command from the application is required to initiate 
-joining. This setting is persistent and takes effect after mote reset.
-
-Note that auto join mode must not be set if the application is also configured 
-to join (e.g combining 'auto join' with 'master' mode will result in mote not 
-joining). 
+joining. This setting is persistent and takes effect after mote reset. 
+(Available Mote >= 1.1) Note that auto join mode must not be set if the 
+application is also configured to join (e.g combining 'auto join' with 'master' 
+mode will result in mote not joining). 
 */
 dn_err_t dn_whmt_setNVParameter_autojoin(uint8_t memory, uint32_t reserved, uint8_t nvParamId, uint8_t autojoin, dn_whmt_setNVParameter_autojoin_rpt* reply) {
    uint8_t    extraFlags;
@@ -3305,7 +3304,7 @@ void dn_whmt_getNVParameter_macAddress_reply(uint8_t cmdId, uint8_t rc, uint8_t*
 //===== getNVParameter_networkId
 
 /**
-The getNVParameter<networkID> command returns the Network ID stored in mote's 
+The getNVParameter<networkId> command returns the Network ID stored in mote's 
 persistent storage. 
 */
 dn_err_t dn_whmt_getNVParameter_networkId(dn_whmt_getNVParameter_networkId_rpt* reply) {
@@ -4200,7 +4199,7 @@ void dn_whmt_getNVParameter_compliantMode_reply(uint8_t cmdId, uint8_t rc, uint8
 //===== getNVParameter_lock
 
 /**
-The getNVParameter <lock> command returns the persisted lock code and locking 
+The getNVParameter < lock > command returns the persisted lock code and locking 
 master (those to be used after reset). To determine the current lock status, 
 use the getParameter<lock> command.Note: This parameter is available in devices 
 running mote software >= 1.1.0 
@@ -5041,7 +5040,7 @@ void dn_whmt_testRadioRx_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, uint
 
 /**
 The clearNV command resets the motes Non-Volatile (NV) memory to its 
-factory-default state. Refer to the WirelessHART Mote User Guide for table of 
+factory-default state. Refer to the WirelessHART User Guide for table of 
 default values. Note that since this command clears the mote's security join 
 counter, the corresponding manager's Access Control List (ACL) entry may need 
 to be cleared as well to allow joining. 
@@ -5348,7 +5347,7 @@ void dn_whmt_testRadioTxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
 //===== testRadioRxExt
 
 /**
-The testRadioRx command clears all previously collected statistics and 
+The testRadioRxExt command clears all previously collected statistics and 
 initiates a test of radio reception for the specified channel and duration. 
 During the test, the mote keeps statistics about the number of packets received 
 (with and without error). The test results may be retrieved using the 
@@ -5444,10 +5443,10 @@ void dn_whmt_testRadioRxExt_reply(uint8_t cmdId, uint8_t rc, uint8_t* payload, u
 //===== zeroize
 
 /**
-Zeroize (zeroise) command erases flash area that is used to store configuration 
-parameters, such as join keys. This command is intended to satisfy zeroization 
-requirement of FIPS-140 standard. After the command executes, the mote should 
-be reset. Available in mote >= 1.1.x
+The zeroize (zeroise) command erases flash area that is used to store 
+configuration parameters, such as join keys. This command is intended to 
+satisfy the zeroization requirement of the FIPS-140 standard. After the command 
+executes, the mote should be reset. Available in mote >= 1.1.x
 
 The zeroize command will render the mote inoperable. It must be re-programmed 
 via SPI or JTAG in order to be useable. 

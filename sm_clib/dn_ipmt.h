@@ -69,7 +69,9 @@ static const uint8_t ipv6Addr_manager[16] = {
 #define PARAMID_MOTEID                 0x17
 #define PARAMID_IPV6ADDRESS            0x18
 #define PARAMID_ROUTINGMODE            0x1d
+#define PARAMID_APPINFO                0x1e
 #define PARAMID_POWERSRCINFO           0x1f
+#define PARAMID_ADVKEY                 0x22
 #define PARAMID_AUTOJOIN               0x24
 
 //===== format of requests
@@ -120,6 +122,10 @@ static const uint8_t ipv6Addr_manager[16] = {
 #define DN_SETPARAMETER_POWERSRCINFO_REQ_OFFS_RECHARGEPERIOD_2       20
 #define DN_SETPARAMETER_POWERSRCINFO_REQ_LEN                         22
 
+// setParameter_advKey
+#define DN_SETPARAMETER_ADVKEY_REQ_OFFS_ADVKEY                       1
+#define DN_SETPARAMETER_ADVKEY_REQ_LEN                               17
+
 // setParameter_autoJoin
 #define DN_SETPARAMETER_AUTOJOIN_REQ_OFFS_MODE                       1
 #define DN_SETPARAMETER_AUTOJOIN_REQ_LEN                             2
@@ -168,6 +174,9 @@ static const uint8_t ipv6Addr_manager[16] = {
 
 // getParameter_routingMode
 #define DN_GETPARAMETER_ROUTINGMODE_REQ_LEN                          1
+
+// getParameter_appInfo
+#define DN_GETPARAMETER_APPINFO_REQ_LEN                              1
 
 // getParameter_powerSrcInfo
 #define DN_GETPARAMETER_POWERSRCINFO_REQ_LEN                         1
@@ -298,6 +307,9 @@ static const uint8_t ipv6Addr_manager[16] = {
 // setParameter_powerSrcInfo
 #define DN_SETPARAMETER_POWERSRCINFO_REPLY_LEN                       1
 
+// setParameter_advKey
+#define DN_SETPARAMETER_ADVKEY_REPLY_LEN                             1
+
 // setParameter_autoJoin
 #define DN_SETPARAMETER_AUTOJOIN_REPLY_LEN                           1
 
@@ -384,6 +396,12 @@ static const uint8_t ipv6Addr_manager[16] = {
 // getParameter_routingMode
 #define DN_GETPARAMETER_ROUTINGMODE_REPLY_OFFS_ROUTINGMODE           1
 #define DN_GETPARAMETER_ROUTINGMODE_REPLY_LEN                        2
+
+// getParameter_appInfo
+#define DN_GETPARAMETER_APPINFO_REPLY_OFFS_VENDORID                  1
+#define DN_GETPARAMETER_APPINFO_REPLY_OFFS_APPID                     3
+#define DN_GETPARAMETER_APPINFO_REPLY_OFFS_APPVER                    4
+#define DN_GETPARAMETER_APPINFO_REPLY_LEN                            9
 
 // getParameter_powerSrcInfo
 #define DN_GETPARAMETER_POWERSRCINFO_REPLY_OFFS_MAXSTCURRENT         1
@@ -542,6 +560,10 @@ typedef struct {
 
 typedef struct {
    uint8_t    RC;
+} dn_ipmt_setParameter_advKey_rpt;
+
+typedef struct {
+   uint8_t    RC;
 } dn_ipmt_setParameter_autoJoin_rpt;
 
 typedef struct {
@@ -642,6 +664,13 @@ typedef struct {
    uint8_t    RC;
    bool       routingMode;
 } dn_ipmt_getParameter_routingMode_rpt;
+
+typedef struct {
+   uint8_t    RC;
+   uint16_t   vendorId;
+   uint8_t    appId;
+   uint8_t    appVer[5];
+} dn_ipmt_getParameter_appInfo_rpt;
 
 typedef struct {
    uint8_t    RC;
@@ -805,6 +834,7 @@ dn_err_t dn_ipmt_setParameter_eventMask(uint32_t eventMask, dn_ipmt_setParameter
 dn_err_t dn_ipmt_setParameter_OTAPLockout(bool mode, dn_ipmt_setParameter_OTAPLockout_rpt* reply);
 dn_err_t dn_ipmt_setParameter_routingMode(bool mode, dn_ipmt_setParameter_routingMode_rpt* reply);
 dn_err_t dn_ipmt_setParameter_powerSrcInfo(uint16_t maxStCurrent, uint8_t minLifetime, uint16_t currentLimit_0, uint16_t dischargePeriod_0, uint16_t rechargePeriod_0, uint16_t currentLimit_1, uint16_t dischargePeriod_1, uint16_t rechargePeriod_1, uint16_t currentLimit_2, uint16_t dischargePeriod_2, uint16_t rechargePeriod_2, dn_ipmt_setParameter_powerSrcInfo_rpt* reply);
+dn_err_t dn_ipmt_setParameter_advKey(uint8_t* advKey, dn_ipmt_setParameter_advKey_rpt* reply);
 dn_err_t dn_ipmt_setParameter_autoJoin(bool mode, dn_ipmt_setParameter_autoJoin_rpt* reply);
 dn_err_t dn_ipmt_getParameter_macAddress(dn_ipmt_getParameter_macAddress_rpt* reply);
 dn_err_t dn_ipmt_getParameter_networkId(dn_ipmt_getParameter_networkId_rpt* reply);
@@ -821,6 +851,7 @@ dn_err_t dn_ipmt_getParameter_OTAPLockout(dn_ipmt_getParameter_OTAPLockout_rpt* 
 dn_err_t dn_ipmt_getParameter_moteId(dn_ipmt_getParameter_moteId_rpt* reply);
 dn_err_t dn_ipmt_getParameter_ipv6Address(dn_ipmt_getParameter_ipv6Address_rpt* reply);
 dn_err_t dn_ipmt_getParameter_routingMode(dn_ipmt_getParameter_routingMode_rpt* reply);
+dn_err_t dn_ipmt_getParameter_appInfo(dn_ipmt_getParameter_appInfo_rpt* reply);
 dn_err_t dn_ipmt_getParameter_powerSrcInfo(dn_ipmt_getParameter_powerSrcInfo_rpt* reply);
 dn_err_t dn_ipmt_getParameter_autoJoin(dn_ipmt_getParameter_autoJoin_rpt* reply);
 dn_err_t dn_ipmt_join(dn_ipmt_join_rpt* reply);
